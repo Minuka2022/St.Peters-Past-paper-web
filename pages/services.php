@@ -106,7 +106,7 @@
         <div class="col-md-4">
             <div class="box">
                 <div class="our-services settings">
-                    <div class="icon"><img src="../res/img/ui_ux.png" style="width: 93px;"></div>
+                    <div class="icon"  ><img src="../res/img/ui_ux.png" style="width: 93px;"></div>
                     <h4>UI/UX</h4>
                     <p>Enjoy our clean user interface that makes you comfortable surfing our website 😉</p>
                 </div>
@@ -157,6 +157,66 @@
                     <h4>24h/24</h4>
                     <p>Our service is open 24h on 24h, so that our customers have access to our products all the time
                         🤓</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box">
+                <div class="our-services settings">
+                    <div class="icon"  ><img src="../res/img/ui_ux.png" style="width: 93px;"></div>
+                    <h4>UI/UX</h4>
+                    <p>Enjoy our clean user interface that makes you comfortable surfing our website 😉</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box">
+                <div class="our-services speedup">
+                    <div class="icon"><img src="../res/img/speed.png" style="width: 93px;"></div>
+                    <h4>Speedup</h4>
+                    <p>Fast user experience, and fast surfing for your favorites products 😍</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box">
+                <div class="our-services privacy">
+                    <div class="icon"><img src="../res/img/security.png" style="width: 93px;"></div>
+                    <h4>Security</h4>
+                    <p>Be comfortable because your data and information is safe ✅</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="box">
+                <div class="our-services settings">
+                    <div class="icon"  ><img src="../res/img/ui_ux.png" style="width: 93px;"></div>
+                    <h4>UI/UX</h4>
+                    <p>Enjoy our clean user interface that makes you comfortable surfing our website 😉</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box">
+                <div class="our-services speedup">
+                    <div class="icon"><img src="../res/img/speed.png" style="width: 93px;"></div>
+                    <h4>Speedup</h4>
+                    <p>Fast user experience, and fast surfing for your favorites products 😍</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="box">
+                <div class="our-services privacy">
+                    <div class="icon"><img src="../res/img/security.png" style="width: 93px;"></div>
+                    <h4>Security</h4>
+                    <p>Be comfortable because your data and information is safe ✅</p>
                 </div>
             </div>
         </div>
