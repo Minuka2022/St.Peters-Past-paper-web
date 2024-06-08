@@ -115,7 +115,7 @@
 <body>
 <div class="container-fluid mb-5 services" id="services">
     <div class="text-center mt-5">
-        <h1>Choose the Grade </h1>
+        <h1>Choose the Subject </h1>
         <center>
             <hr size="6">
         </center>
@@ -123,7 +123,7 @@
     <div class="row justify-content-center">
         <div class="col-md-3">
             <div class="box">
-                <a href="Subject-selection.php" class="text-decoration-none">
+                <a href="Grade.php" class="text-decoration-none">
                     <div class="our-services settings custom-border" style="padding-top:80px;">
                         <h4 style="font-weight:bold; font-size:36px;">Grade 1</h4>
                     </div>
@@ -135,7 +135,7 @@
             <div class="box">
                 <div class="our-services settings custom-border" style="padding-top:80px; ">
                   
-                    <h4 style="font-weight:bold; font-size:36px;" >Grade 2</h4>
+                    <h4 style="font-weight:bold; font-size:36px;" >Sinhala </h4>
                   
                 </div>
             </div>
@@ -144,7 +144,7 @@
             <div class="box">
                 <div class="our-services settings custom-border" style="padding-top:80px; ">
                   
-                    <h4 style="font-weight:bold; font-size:36px;" >Grade 3</h4>
+                    <h4 style="font-weight:bold; font-size:36px;" >Budhagama </h4>
                   
                 </div>
             </div>
@@ -155,7 +155,7 @@
             <div class="box">
                 <div class="our-services settings custom-border" style="padding-top:80px; ">
                   
-                    <h4 style="font-weight:bold; font-size:36px;" >Grade 4</h4>
+                    <h4 style="font-weight:bold; font-size:36px;" >Maths </h4>
                   
                 </div>
             </div>
@@ -164,7 +164,7 @@
             <div class="box">
                 <div class="our-services settings custom-border" style="padding-top:80px; ">
                   
-                    <h4 style="font-weight:bold; font-size:36px;" >Grade 5</h4>
+                    <h4 style="font-weight:bold; font-size:36px;" >English </h4>
                   
                 </div>
             </div>
