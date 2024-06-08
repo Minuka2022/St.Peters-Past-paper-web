@@ -257,48 +257,65 @@ $loadQuery = $loadQuery . " LIMIT " . $bound . ", " . $nbProductsInPage;
         }
 
         main .banner {
-            background-image: linear-gradient(135deg, #52bfe7 10%, #130CB7 100%);
-            display: flex;
-        }
+    position: relative; /* Add this to position the pseudo-element overlay */
+    background: url('https://www.stpeterscollege.lk/wp-content/uploads/2021/03/SPC-16-scaled.jpg') no-repeat center center;
+    background-size: cover;
+    display: flex;
+}
 
-        main .banner .image-container {
-            max-height: 500px;
-            margin-right: 0;
-            margin-left: auto;
-        }
+main .banner::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+      background: rgb(1, 32, 78,0.8);
+    z-index: 1; /* Ensures the overlay is above the background image but below the content */
+     border-radius: 20px;
+}
 
-        @media all and (max-width: 1024px) {
-            main .banner .image-container {
-                display: none;
-            }
-        }
+main .banner .content {
+    position: relative;
+    z-index: 2; /* Ensures the content is above the overlay */
+    color: white; /* Assuming you want white text on the overlay */
+}
 
-        @media all and (min-width: 1024px) {
-            main .banner {
-                background-image: linear-gradient(135deg, #52bfe7 10%, #130CB7 100%);
-                max-height: 500px;
-                display: flex;
-            }
+main .banner .image-container {
+    max-height: 500px;
+    margin-right: 0;
+    margin-left: auto;
+    position: relative;
+    z-index: 2; /* Ensures the image is above the overlay */
+}
 
-            main .banner .content {
-                position: relative;
-            }
+@media all and (max-width: 1024px) {
+    main .banner .image-container {
+        display: none;
+    }
+}
 
-            main .banner .content .actionbtn {
-                margin-bottom: 0;
-                margin-top: auto;
-                position: absolute;
-                bottom: 0;
-            }
+@media all and (min-width: 1024px) {
+    main .banner {
+        max-height: 500px;
+        display: flex;
+    }
 
-            main .banner .image-container {
-                display: block;
-            }
+    main .banner .content .actionbtn {
+        margin-bottom: 0;
+        margin-top: auto;
+        position: absolute;
+        bottom: 0;
+    }
 
-            main .banner .image-container img {
-                height: 395px;
-            }
-        }
+    main .banner .image-container {
+        display: block;
+    }
+
+    main .banner .image-container img {
+        height: 395px;
+    }
+}
 
         .form-select-sm {
             margin: 6px 0;
@@ -354,15 +371,7 @@ $loadQuery = $loadQuery . " LIMIT " . $bound . ", " . $nbProductsInPage;
             color: #fff;
         }
 
-        .nav-item {
-            transition: all 0.3s ease-in-out;
-            border-radius: 6px;
-        }
-
-        .nav-item:hover {
-            background-color: #1f7dff;
-            border-radius: 6px;
-        }
+      
 
         .txt {
             color: #fff;
@@ -439,43 +448,35 @@ if (isset($_SESSION['customerID'])) {
 ?>
 <!-- bootstrap navbar  -->
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-lg bg-light">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
                 aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a href="index.php" class="logo navbar-brand fw-bold"><span>Tex</span><span
-                    style="color: #28C7FA">GEAR</span></a>
+        <img src="https://www.stpeterscollege.lk/wp-content/uploads/2020/09/SPC_Web-logo-New.png" alt="" style="margin-bottom:10px;">
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link" href="#products-all">Products</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#services">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#about">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contact.php" target="_blank">Contact Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="login.php" target="_blank">Admin</a>
-                </li>
-            </ul>
-            <div class="basket p-1">
-                <button class="closebtn btn btn-warning me-3 shadow position-relative" onclick="showCart()">
-                    <img src="../res/img/shoppingcart.png" style="width: 30px">
-                    <span class="NbOrders hidden position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                          id="Badge">
-                        0
-                    </span>
-                </button>
+                <div class="d-flex justify-content-center w-100">
+                    <ul class="navbar-nav mb-2 mb-lg-0" style="font-weight:bold;">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#products-all">Events</a>
+                        </li>
+                      
+                        <li class="nav-item">
+                            <a class="nav-link" href="#about">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="contact.php" target="_blank">Contact Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="login.php" target="_blank">Admin</a>
+                        </li>
+                    </ul>
+                </div>
+              
+                <div class="toggle"></div>
             </div>
-            <div class="toggle"></div>
-        </div>
+
     </div>
 </nav>
 
@@ -503,167 +504,25 @@ if (isset($_SESSION['customerID'])) {
             ;
         } else {
             banner.innerHTML =
-                '<div class="content">' +
-                '   <h1 class="">Welcome to TexGEAR: Tech store</h1>' +
-                '   <p class="">Enjoy a safe, convenient shopping experience</p>' +
+                 '<div class="content">' +
+                '   <h1 class="">St.Peters college past paper web banner</h1>' +
+                '   <p class="">Sample description</p>' +
                 '   <div class="actionbtn">' +
-                '      <button id="log-in" class="" style="width: 120px;" onclick="showLogin()">Login <i class="fa fa-sign-in" style="margin-left: 4px; font-size: 18px;"></i></button>' +
-                '      <button id="register" class="" style="width: 120px;" onclick="showRegistration()">Register<i class="fa fa-user-plus" style="margin-left: 4px;"></i></button>' +
+                '      <button id="log-in" class="" style="width: 180px;" onclick="window.location.href=\'https://www.stpeterscollege.lk/\'">Visit School site <i class="fa fa-arrow" style="margin-left: 4px; font-size: 18px;"></i></button>' +
+                // '      <button id="register" class="" style="width: 120px;" onclick="showRegistration()">Register<i class="fa fa-user-plus" style="margin-left: 4px;"></i></button>' +
                 '   </div>' +
                 '</div>' +
                 '<div class="image-container">' +
                 '   <div class="image-overlay"></div>' +
-                '   <img src="../res/img/Picture1.png">' +
+                '   <img src="https://www.stpeterscollege.lk/wp-content/uploads/2020/09/SPC_Web-Crest_New.png">' +
                 '</div>'
             ;
         }
 
     </script>
-    <?php include '../client/categories_dropdown.php'; ?>
+    <!-- <?php include '../client/categories_dropdown.php'; ?> -->
 
-    <div class="products">
-        <div class="categories" id="categories"></div>
-        <div class="pages">
-            <form id="pages">
-                <style>
-                    #slider {
-                        margin: 2em auto;
-                        width: 100%;
-                        overflow: hidden;
-                    }
 
-                    #slider-nav {
-                        margin: 1em 0;
-                        text-align: center;
-                    }
-
-                    #slider-nav label {
-                        display: inline-block;
-                        width: 2em;
-                        height: 2em;
-                        border: 1px solid #ccc;
-                        text-align: center;
-                        text-decoration: none;
-                        color: #000;
-                        display: inline-block;
-                        line-height: 2;
-                        margin: 0.5em;
-                    }
-
-                    #slider-nav label:hover {
-                        cursor: pointer;
-                    }
-
-                    #slider-nav input[type="radio"] {
-                        display: none;
-                    }
-
-                    #slider-nav input[type="radio"]:checked + label {
-                        border-color: #307cff;
-                        color: white;
-                        background-color: #59adff;
-                    }
-                </style>
-                <div id="slider">
-                    <div id="slider-nav"></div>
-                </div>
-                <script>
-                    function loadPagingButtons(totalProducts) {
-                        var pages_form = document.getElementById('pages');
-                        var slider_nav = document.getElementById('slider-nav');
-                        var nbProductsInPage = <?php echo $nbProductsInPage; ?>;
-                        var nbPages = Math.ceil(totalProducts / nbProductsInPage);
-                        var currPage = <?php echo $currentPage; ?>;
-                        var buttons = "";
-
-                        if (nbPages > 1) {
-                            for (let i = 0; i < nbPages; i++) {
-                                if (i == currPage - 1) {
-                                    buttons += '<input type="radio" class="pages_radios" name="page" id="' + (i + 1) + '" value="' + (i + 1) + '" checked>' +
-                                        '<label for="' + (i + 1) + '" class="page_link">' + (i + 1) + '</label>'
-                                    ;
-                                } else {
-                                    buttons += '<input type="radio" class="pages_radios" name="page" id="' + (i + 1) + '" value="' + (i + 1) + '">' +
-                                        '<label for="' + (i + 1) + '" class="page_link">' + (i + 1) + '</label>'
-                                    ;
-                                }
-                            }
-                        }
-
-                        slider_nav.innerHTML = buttons;
-
-                    }
-                </script>
-            </form>
-        </div>
-    </div>
-
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script src="../js/sweetalert.js"></script>
-    <script language="JavaScript">
-        function displayProducts() {
-            <?php loadProducts($con, $loadQuery); ?>
-            const products_box = document.getElementById("categories");
-            var products_inner_html = "";
-            if (products.length > 0) {
-                for (var i = 0; i < products.length; i++) {
-                    //format description
-                    var product_description = products[i][6];
-                    if (product_description.length >= 30) {
-                        product_description = product_description.substring(0, 30) + ".";
-                        product_description = product_description + ".. " + '<a href="view_product.php?id=' + products[i][4] + '" class="read-more">read more</a>';
-                    } else if (product_description.length > 0 && product_description.length < 30) {
-                        product_description = product_description + ' <a href="view_product.php?id=' + products[i][4] + '" class="read-more">read more</a>';
-                    } else {
-                        product_description = '<a href="view_product.php?id=' + products[i][4] + '" class="read-more">read more</a>';
-                    }
-
-                    //format product name
-                    var product_name = products[i][0];
-                    if (product_name.length > 20) {
-                        product_name = product_name.substring(0, 20) + "...";
-                    } else if (product_name.length == 0) {
-                        product_name = "No name";
-                    } else {
-                        product_name = product_name;
-                    }
-                    products_inner_html +=
-                        '<!-- PRODUCT CARD -->' +
-                        '<div class="products shadow-lg mb-5 bg-body rounded">' +
-                        '   <div class="card">' +
-                        '      <div class="product-image">' +
-                        '           <img id="product-image" src="' + products[i][3] + '" alt="product image">' +
-                        '       </div>' +
-                        '       <h1 class="product-name">' + product_name +
-                        '       </h1>' +
-                        '       <div class="description" style="width: 220px; height: 48px; color: rgba(255, 255, 255, 0.6);">' +
-                        '       ' + product_description +
-                        '       </div>' +
-                        '       <div class="product-price">' +
-                        '           <span class="txt">Price : </span><span class="txt" id="base-price"' +
-                        '                                           style="font-weight: bold; margin: 16px;">' + Intl.NumberFormat("en-US", {
-                            style: "currency",
-                            currency: "USD"
-                        }).format(products[i][2]) + '</span>' +
-                        '       </div>' +
-                        '       <div class="product-stock">' +
-                        '           <span class="txt">In Stock : </span><span class="txt" style="font-weight: bold; margin: 16px;">' + products[i][1] + '</span>' +
-                        '       </div>' +
-                        '       <button class="addToCart btn btn-warning">' +
-                        '           <img src="../res/img/cart.ico" alt="">' +
-                        '       </button>' +
-                        '   </div>' +
-                        '</div>';
-                }
-                products_box.innerHTML = products_inner_html;
-                loadPagingButtons(<?php echo $productsToShow; ?>);
-            } else if (products.length == 0) {
-                products_box.innerHTML = '<div style="width: 100%; display: flex; justify-content: center; align-items: center;"><img src="../res/img/no-result.gif"></div>';
-            }
-        }
-
-        displayProducts();
-    </script>
 </main>
 
 <form action="index.php" id="reload" method="get" style="display: none;">
