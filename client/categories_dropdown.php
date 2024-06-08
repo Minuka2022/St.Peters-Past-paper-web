@@ -14,7 +14,7 @@ if (mysqli_num_rows($result) > 0) {
 ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light mt-5 shadow p-2 mb-5 bg-body rounded" id="products-all">
     <div class="container-fluid">
-        <a class="navbar-brand fw-bold">Products</a>
+        <a class="navbar-brand fw-bold">Grade 3 </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,28 +23,54 @@ if (mysqli_num_rows($result) > 0) {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li>
                     <form style="margin-right: 12px;">
+                        <select id="year_selector" name="year" class="form-select form-select-sm"
+                                aria-label=".form-select-sm example">
+                            <option selected>Select Year</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                        </select>
+                    </form>
+                </li>
+                <li>
+                    <form style="margin-right: 12px;">
                         <select id="categories_list" name="filter_by" class="form-select form-select-sm"
                                 aria-label=".form-select-sm example">
                         </select>
                     </form>
-
                 </li>
-
+                <li>
+                    <form style="margin-right: 12px;">
+                        <select id="term_selector" name="term" class="form-select form-select-sm"
+                                aria-label=".form-select-sm example">
+                            <option selected>Select Term</option>
+                            <option value="1">Term 1</option>
+                            <option value="2">Term 2</option>
+                            <option value="3">Term 3</option>
+                        </select>
+                    </form>
+                </li>
+                <li>
+                    <form style="margin-right: 12px;">
+                        <select id="medium_selector" name="medium" class="form-select form-select-sm"
+                                aria-label=".form-select-sm example">
+                            <option selected>Select Medium</option>
+                            <option value="english">English</option>
+                            <option value="french">French</option>
+                            <option value="spanish">Spanish</option>
+                        </select>
+                    </form>
+                </li>
                 <li>
                     <form style="margin-right: 12px;">
                         <select id="sort_selector" name="sort_by" class="form-select form-select-sm"
                                 aria-label=".form-select-sm example">
-
                         </select>
                     </form>
                 </li>
-
                 <li>
-                    <form style="margin-right: 12px;">
-                        <select id="per_page_selector" name="per_page" class="form-select form-select-sm"
-                                aria-label=".form-select-sm example">
-                        </select>
-                    </form>
+                    <button type="button" class="btn btn-primary" id="filter-button">Filter</button>
                 </li>
                 <script language="JavaScript">
                     const dropdown_menu = document.getElementById('categories_list');
@@ -68,7 +94,7 @@ if (mysqli_num_rows($result) > 0) {
                             }
                         }
                     } else {
-                        dropdown_menu_html = "<option selected>Filter by</option>";
+                        dropdown_menu_html = "<option selected>Select Subject</option>";
                     }
                     dropdown_menu.innerHTML = dropdown_menu_html;
 
@@ -77,8 +103,7 @@ if (mysqli_num_rows($result) > 0) {
                     var currSort = parseInt("<?php echo $sort_by; ?>");
                     switch (currSort) {
                         case 1 :
-                            sort_menu_Html = "<option>Sort by</option>" +
-                                "<option class='sort_option' selected value='1'>Most expensive</option>" +
+                            sort_menu_Html = "<option selected>Sort by</option>" +
                                 "<option class='sort_option' value='2'>Most cheapest</option>" +
                                 "<option class='sort_option' value='3'>Most recent</option>" +
                                 "<option class='sort_option' value='4'>The oldest</option>" +
@@ -87,7 +112,6 @@ if (mysqli_num_rows($result) > 0) {
 
                         case 2 :
                             sort_menu_Html = "<option>Sort by</option>" +
-                                "<option class='sort_option' value='1'>Most expensive</option>" +
                                 "<option class='sort_option' selected value='2'>Most cheapest</option>" +
                                 "<option class='sort_option' value='3'>Most recent</option>" +
                                 "<option class='sort_option' value='4'>The oldest</option>" +
@@ -96,7 +120,6 @@ if (mysqli_num_rows($result) > 0) {
 
                         case 3 :
                             sort_menu_Html = "<option>Sort by</option>" +
-                                "<option class='sort_option' value='1'>Most expensive</option>" +
                                 "<option class='sort_option' value='2'>Most cheapest</option>" +
                                 "<option class='sort_option' selected value='3'>Most recent</option>" +
                                 "<option class='sort_option' value='4'>The oldest</option>" +
@@ -105,7 +128,6 @@ if (mysqli_num_rows($result) > 0) {
 
                         case 4 :
                             sort_menu_Html = "<option>Sort by</option>" +
-                                "<option class='sort_option' value='1'>Most expensive</option>" +
                                 "<option class='sort_option' value='2'>Most cheapest</option>" +
                                 "<option class='sort_option' value='3'>Most recent</option>" +
                                 "<option class='sort_option' selected value='4'>The oldest</option>" +
@@ -114,7 +136,6 @@ if (mysqli_num_rows($result) > 0) {
 
                         case 5 :
                             sort_menu_Html = "<option>Sort by</option>" +
-                                "<option class='sort_option' value='1'>Most expensive</option>" +
                                 "<option class='sort_option' value='2'>Most cheapest</option>" +
                                 "<option class='sort_option' value='3'>Most recent</option>" +
                                 "<option class='sort_option' value='4'>The oldest</option>" +
@@ -122,8 +143,7 @@ if (mysqli_num_rows($result) > 0) {
                             break;
 
                         default :
-                            sort_menu_Html = "<option selected >Sort by</option>" +
-                                "<option class='sort_option' value='1'>Most expensive</option>" +
+                            sort_menu_Html = "<option selected>Sort by</option>" +
                                 "<option class='sort_option' value='2'>Most cheapest</option>" +
                                 "<option class='sort_option' value='3'>Most recent</option>" +
                                 "<option class='sort_option' value='4'>The oldest</option>" +
@@ -131,85 +151,14 @@ if (mysqli_num_rows($result) > 0) {
                             break;
                     }
                     sort_menu.innerHTML = sort_menu_Html;
-
-                    var page_menu = document.getElementById("per_page_selector");
-                    var page_menu_Html = "";
-                    var currentPerPage = parseInt("<?php echo $nbProductsInPage; ?>");
-                    switch (currentPerPage) {
-                        default :
-                            page_menu_Html = '<option selected value="0">Per page</option>' +
-                                '<option class="per_page_option" value="8">8</option>' +
-                                '<option class="per_page_option" value="16">16</option>' +
-                                '<option class="per_page_option" value="24">24</option>' +
-                                '<option class="per_page_option" value="32">32</option>';
-                            break;
-
-                        case 8 :
-                            page_menu_Html = '<option value="0">Per page</option>' +
-                                '<option class="per_page_option" selected value="8">8</option>' +
-                                '<option class="per_page_option" value="16">16</option>' +
-                                '<option class="per_page_option" value="24">24</option>' +
-                                '<option class="per_page_option" value="32">32</option>';
-                            break;
-
-                        case 16 :
-                            page_menu_Html = '<option value="0">Per page</option>' +
-                                '<option class="per_page_option" value="8">8</option>' +
-                                '<option class="per_page_option" selected value="16">16</option>' +
-                                '<option class="per_page_option" value="24">24</option>' +
-                                '<option class="per_page_option" value="32">32</option>';
-                            break;
-
-                        case 24 :
-                            page_menu_Html = '<option value="0">Per page</option>' +
-                                '<option class="per_page_option" value="8">8</option>' +
-                                '<option class="per_page_option" value="16">16</option>' +
-                                '<option class="per_page_option" selected value="24">24</option>' +
-                                '<option class="per_page_option" value="32">32</option>';
-                            break;
-
-                        case 32 :
-                            page_menu_Html = '<option value="0">Per page</option>' +
-                                '<option class="per_page_option" value="8">8</option>' +
-                                '<option class="per_page_option" value="16">16</option>' +
-                                '<option class="per_page_option" value="24">24</option>' +
-                                '<option class="per_page_option" selected value="32">32</option>';
-                            break;
-                    }
-                    page_menu.innerHTML = page_menu_Html;
                 </script>
             </ul>
-            <form class="d-flex" id="search-form">
-                <input class="form-control me-1" autocomplete="off" list="search-results" type="search"
-                       id="search-input"
-                       name="search"
-                       value="<?php echo $searchQuery; ?>"
-                       placeholder="Search..." aria-label="Search">
-                <button type="submit" class="btn btn-primary" style="height: 100%;" id="search-button" value="1">
-                    <i class="fa fa-search"></i>
-                </button>
-                <datalist id="search-results"></datalist>
-            </form>
         </div>
     </div>
 </nav>
 <script language="JavaScript">
-
-    //live search
-    $("#search-input").keyup(function () {
-        $.ajax({
-            type: "GET",
-            url: '../client/search.php',
-            data: {
-                search: $("#search").val(),
-            },
-            success: function (data) {
-                console.log(data);
-                $("#search-results").html(data);
-            },
-            error: function () {
-                $("#search-results").html("<option value='No suggestions'>");
-            }
-        })
-    })
+    document.getElementById('filter-button').addEventListener('click', function () {
+        // Add your filtering logic here
+        alert('Filter button clicked!');
+    });
 </script>

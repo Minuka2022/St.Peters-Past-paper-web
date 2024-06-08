@@ -123,7 +123,7 @@
     <div class="row justify-content-center">
         <div class="col-md-3">
             <div class="box">
-                <a href="Grade.php" class="text-decoration-none">
+                <a href="Past-papers.php" class="text-decoration-none">
                     <div class="our-services settings custom-border" style="padding-top:80px;">
                         <h4 style="font-weight:bold; font-size:36px;">Grade 1</h4>
                     </div>
