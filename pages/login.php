@@ -34,202 +34,110 @@ if (isset($_POST['login'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../res/img/logo.svg">
-    <link rel="stylesheet" href="../style/login.css">
-    <link rel="stylesheet" href="../style/loading.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <link rel="stylesheet" href="../style/select_text.css">
+   
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
     <title>Login</title>
 </head>
 <style>
-    #toast {
-        font-family: Cairo;
-        visibility: hidden;
-        max-width: 50px;
-        height: 50px;
-        /*margin-left: -125px;*/
-        margin: auto;
-        background-color: #ff1616;
-        color: #fff;
-        text-align: center;
-        border-radius: 2px;
+   body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        right: 0;
-        bottom: 30px;
-        font-size: 17px;
-        white-space: nowrap;
-    }
+.container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  box-sizing: border-box;
+}
 
-    #toast #img {
-        width: 50px;
-        height: 50px;
+.login-card {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
 
-        float: left;
+.login-card-header {
+  background-color: #00215E;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+}
 
-        padding-top: 16px;
-        padding-bottom: 16px;
+.login-card-body {
+  padding: 20px;
+}
 
-        box-sizing: border-box;
+.form-group {
+  margin-bottom: 15px;
+}
 
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
 
-        background-color: #ff6d6d;
-        color: #fff;
-    }
+input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
 
-    #toast #desc {
+.login-btn {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: #00215E;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
 
-
-        color: #fff;
-
-        padding: 16px;
-
-        overflow: hidden;
-        white-space: nowrap;
-    }
-
-    #toast.show {
-        visibility: visible;
-        -webkit-animation: fadein 0.5s, expand 0.5s 0.5s, stay 3s 1s, shrink 0.5s 2s, fadeout 0.5s 2.5s;
-        animation: fadein 0.5s, expand 0.5s 0.5s, stay 3s 1s, shrink 0.5s 4s, fadeout 0.5s 4.5s;
-    }
-
-    @-webkit-keyframes fadein {
-        from {
-            bottom: 0;
-            opacity: 0;
-        }
-        to {
-            bottom: 30px;
-            opacity: 1;
-        }
-    }
-
-    @keyframes fadein {
-        from {
-            bottom: 0;
-            opacity: 0;
-        }
-        to {
-            bottom: 30px;
-            opacity: 1;
-        }
-    }
-
-    @-webkit-keyframes expand {
-        from {
-            min-width: 50px
-        }
-        to {
-            min-width: 350px
-        }
-    }
-
-    @keyframes expand {
-        from {
-            min-width: 50px
-        }
-        to {
-            min-width: 350px
-        }
-    }
-
-    @-webkit-keyframes stay {
-        from {
-            min-width: 350px
-        }
-        to {
-            min-width: 350px
-        }
-    }
-
-    @keyframes stay {
-        from {
-            min-width: 350px
-        }
-        to {
-            min-width: 350px
-        }
-    }
-
-    @-webkit-keyframes shrink {
-        from {
-            min-width: 350px;
-        }
-        to {
-            min-width: 50px;
-        }
-    }
-
-    @keyframes shrink {
-        from {
-            min-width: 350px;
-        }
-        to {
-            min-width: 50px;
-        }
-    }
-
-    @-webkit-keyframes fadeout {
-        from {
-            bottom: 30px;
-            opacity: 1;
-        }
-        to {
-            bottom: 60px;
-            opacity: 0;
-        }
-    }
-
-    @keyframes fadeout {
-        from {
-            bottom: 30px;
-            opacity: 1;
-        }
-        to {
-            bottom: 60px;
-            opacity: 0;
-        }
-    }
+.login-btn:hover {
+  background-color: #002C7D;
+}
 </style>
 <body>
-<header>
-    <a href="login.php" class="logo"><span>Tex</span>GEAR<span></span></a>
-</header>
+
 
 <?php include('loading.php'); ?>
 
 <div class="container">
-    <img src="../res/img/avatar.png" alt="" class="login-img">
-    <h1>Identification</h1>
-    <hr color="#FF304F" width="250" size="4">
-
-    <form action="login.php" method="POST">
-        <div class="input-container">
-            <i class="icon"><img src="../res/img/user.png" alt=""></i>
-            <input class="input-field" type="text" placeholder="Username" name="username">
+  <div class="login-card">
+    <div class="login-card-header">
+      <h2>SPCPTA | LOGIN</h2>
+    </div>
+    <div class="login-card-body">
+      <form action="login.php" method="POST">
+        <div class="form-group">
+          <label for="username">Username:</label>
+          <input class="input-field" type="text"  name="username">
         </div>
-
-        <div class="input-container">
-            <i class="icon"><img src="../res/img/password.png" alt=""></i>
-            <input class="input-field" type="password" placeholder="Password" name="password">
+        <div class="form-group">
+          <label for="password">Password:</label>
+         <input class="input-field" type="password" name="password">
         </div>
-
-        <button type="submit" name="login" class="btn">LOGIN</button>
-
-        <a href="verification.php">Forgot password ?</a>
-    </form>
+        <button type="submit" class="login-btn" name="login" >Login</button>
+      </form>
+    </div>
+  </div>
 </div>
 
-<footer>
-    <center>
-        <p>TexGEAR, All rights reserved @2022</p>
-    </center>
-</footer>
+
 
 <script>
     var closeBtn = document.querySelector(".closebtn");
