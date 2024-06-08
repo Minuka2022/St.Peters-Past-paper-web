@@ -33,9 +33,10 @@
 }
 
 .custom-border {
-    border: 1px solid #01204E; /* Change the color code to your desired border color */
+    border: 2.5px solid rgb(1, 32, 78 , 0.4); /* Change the color code to your desired border color */
      transition: border 0.5s ease;
 }
+
 
 
 

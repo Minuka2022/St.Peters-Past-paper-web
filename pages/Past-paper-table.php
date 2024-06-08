@@ -33,10 +33,6 @@
    
 }
 
-.custom-border {
-    border: 1px solid #01204E; /* Change the color code to your desired border color */
-     transition: border 0.5s ease;
-}
 
 
 
