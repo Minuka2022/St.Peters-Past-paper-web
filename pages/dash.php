@@ -194,9 +194,17 @@ $loadQuery = $loadQuery . " LIMIT " . $bound . ", " . $nbProductsInPage;
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"
             integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+             <link rel="stylesheet" href="../style/sidebar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="../style/index.css">
+    <link rel="stylesheet" href="../style/select_text.css">
+    <link rel="stylesheet" href="../style/dashboard.css">
+    <link rel="stylesheet" href="../style/sidebar.css">
+    <link rel="stylesheet" href="../style/forms.css">
+    <link rel="stylesheet" href="../style/product.css">
+    <link rel="stylesheet" href="../style/report.css">
+    <link rel="stylesheet" href="../style/product_details_modal.css">
     <link rel="stylesheet" href="../style/select_text.css">
     <title>TexGear</title>
     <script language='JavaScript'>
@@ -448,79 +456,62 @@ if (isset($_SESSION['customerID'])) {
 ?>
 <!-- bootstrap navbar  -->
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-lg bg-light">
-    <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
-                aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <img src="https://www.stpeterscollege.lk/wp-content/uploads/2020/09/SPC_Web-logo-New.png" alt="" style="margin-bottom:10px; margin-right:0px;">
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-                <div class="d-flex justify-content-center w-75 ">
-                    <ul class="navbar-nav mb-2 mb-lg-0" style="font-weight:bold;">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.php">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#products-all">Events</a>
-                        </li>
-                      
-                        <li class="nav-item">
-                            <a class="nav-link" href="#about">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.php" target="_blank">Contact Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="login.php" target="_blank">Admin</a>
-                        </li>
-                    </ul>
-                </div>
-              
-                <div class="toggle"></div>
-            </div>
+<nav class="navbar" onmouseover="mouseEnter()" onmouseout="mouseOut()">
+    <ul class="navbar-nav">
+        <li class="logo">
+            <a href="#" class="nav-link" onmouseover="mouseEnter()" onmouseout="mouseOut()">
+                <span class="link-text logo-text"><h2>SPCPTA </h2></span>
+                <img src="https://www.stpeterscollege.lk/wp-content/uploads/2020/09/SPC_Web-Crest_New.png" alt="">
+            </a>
+        </li>
 
-    </div>
+        <li class="nav-item">
+            <a href="#dashboard" class="nav-link active-link" onmouseover="mouseEnter()" onmouseout="mouseOut()"
+               onclick="changeToDashboard()">
+                <img class="nav-icon" src="../res/img/chart.png" alt="">
+                <span class="link-text">Dashboard</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="#profile" class="nav-link" onmouseover="mouseEnter()" onmouseout="mouseOut()"
+               onclick="changeToProfile()">
+                <img class="nav-icon" src="../res/img/profile1.png" alt="">
+                <span class="link-text">Profile</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="#users" class="nav-link" onmouseover="mouseEnter()" onmouseout="mouseOut()"
+               onclick="changeToUsers()">
+                <img class="nav-icon" src="../res/img/users.png" alt="">
+                <span class="link-text">Users</span>
+            </a>
+        </li>
+
+        
+        <li class="nav-item">
+            <a href="#products" class="nav-link" onmouseover="mouseEnter()" onmouseout="mouseOut()"
+               onclick="changeToProducts()">
+                <img class="nav-icon" src="../res/img/product.png" alt="">
+                <span class="link-text">Subjects</span>
+            </a>
+        </li>
+
+        
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" onclick="logout()" onmouseover="mouseEnter()" onmouseout="mouseOut()">
+                <img class="nav-icon" src="../res/img/logout.png">
+                <span class="link-text">Logout</span>
+            </a>
+        </li>
+    </ul>
 </nav>
+
 <main>
-    <div class="banner" id="banner">
-
-    </div>
-    <script defer>
-        const banner = document.getElementById('banner');
-        if (isLogin == true) {
-            banner.innerHTML =
-                '<div class="content">' +
-                '   <h1 class="">Welcome <?php
-                    echo $full_name;
-                    ?></h1>' +
-                '   <p class="">Enjoy a safe, convenient shopping experience</p>' +
-                '   <div class="actionbtn">' +
-                '       <button id="log-out" class="" style="width: 120px; background-color: red;">Log out</button>' +
-                '   </div>' +
-                '</div>' +
-                '<div class="image-container">' +
-                '   <div class="image-overlay"></div>' +
-                '   <img src="../res/img/Picture1.png">' +
-                '</div>'
-            ;
-        } else {
-            banner.innerHTML =
-                 '<div class="content">' +
-                '   <h1 class="">St.Peters college past paper web banner</h1>' +
-                '   <p class="">Sample description</p>' +
-                '   <div class="actionbtn">' +
-                '      <button id="log-in" class="" style="width: 180px;" onclick="window.location.href=\'https://www.stpeterscollege.lk/\'">Visit School site <i class="fa fa-arrow" style="margin-left: 4px; font-size: 18px;"></i></button>' +
-                // '      <button id="register" class="" style="width: 120px;" onclick="showRegistration()">Register<i class="fa fa-user-plus" style="margin-left: 4px;"></i></button>' +
-                '   </div>' +
-                '</div>' +
-                '<div class="image-container">' +
-                '   <div class="image-overlay"></div>' +
-                '   <img src="https://www.stpeterscollege.lk/wp-content/uploads/2020/09/SPC_Web-Crest_New.png">' +
-                '</div>'
-            ;
-        }
-
+    
     </script>
     <!-- <?php include '../client/categories_dropdown.php'; ?> -->
 
@@ -537,8 +528,8 @@ if (isset($_SESSION['customerID'])) {
 
 <!-- ALL POP UPS MODALS -->
 <?php include '../client/pop_ups.php' ?>
-<?php include 'services.php' ?>
-<?php include 'footer.php' ?>
+<?php include 'Subjects.php' ?>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/addToCart.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

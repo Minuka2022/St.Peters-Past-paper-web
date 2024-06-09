@@ -267,8 +267,8 @@ $earningsTotal = 139;
     <ul class="navbar-nav">
         <li class="logo">
             <a href="#" class="nav-link" onmouseover="mouseEnter()" onmouseout="mouseOut()">
-                <span class="link-text logo-text">Tex<font color="#fff">GEAR</font></span>
-                <img src="../res/img/logo.svg" alt="">
+                <span class="link-text logo-text"><h2>SPCPTA </h2></span>
+                <img src="https://www.stpeterscollege.lk/wp-content/uploads/2020/09/SPC_Web-Crest_New.png" alt="">
             </a>
         </li>
 
@@ -296,36 +296,16 @@ $earningsTotal = 139;
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="#category" class="nav-link" onmouseover="mouseEnter()" onmouseout="mouseOut()"
-               onclick="changeToCategory()">
-                <img class="nav-icon" src="../res/img/categories.png" alt="">
-                <span class="link-text">Categories</span>
-            </a>
-        </li>
-
+        
         <li class="nav-item">
             <a href="#products" class="nav-link" onmouseover="mouseEnter()" onmouseout="mouseOut()"
                onclick="changeToProducts()">
                 <img class="nav-icon" src="../res/img/product.png" alt="">
-                <span class="link-text">Add Product</span>
+                <span class="link-text">Subjects</span>
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="#sales" class="nav-link" onmouseover="mouseEnter()" onmouseout="mouseOut()"
-               onclick="changeToSales()">
-                <img class="nav-icon" src="../res/img/sales_sidebar.png" alt="">
-                <span class="link-text">Sales</span>
-            </a>
-        </li>
-
-        <li class="nav-item">
-            <a href="#reports" class="nav-link" onmouseover="mouseEnter()" onmouseout="mouseOut()"
-               onclick="changeToReports()">
-                <img class="nav-icon" src="../res/img/reports.png" alt="">
-                <span class="link-text">Reports</span>
-            </a>
+        
         </li>
 
         <li class="nav-item">
@@ -337,112 +317,28 @@ $earningsTotal = 139;
     </ul>
 </nav>
 
+
+
 <!-- MAIN CONTENT -->
 <main class="content">
     <h1>Dashboard</h1>
+    <h3>Choose grade     to manage papers</h3>
     <hr color="#FF304F" width="90%" size="4">
 
     <!-- CARDS CONTAINER -->
 
     <div class="cards-container">
-        <div class="card">
-            <img src="../res/img/product.png" alt="box icon" style="width: 90px;">
-            <div class="info">
-                <h3><?php echo $total_products ?></h3>
-                <p>Products</p>
-            </div>
-        </div>
-
-        <div class="card users">
-            <img src="../res/img/users.png" alt="box icon" style="width: 90px;">
-            <div class="info">
-                <h3><?php echo $total_customers ?></h3>
-                <p>Customers</p>
-            </div>
-        </div>
-
-        <div class="card sales">
-            <img src="../res/img/sales.png" alt="box icon">
-            <div class="info">
-                <h3><?php echo $total_sales ?></h3>
-                <p>Orders</p>
-            </div>
-        </div>
-
-        <div class="card earnings">
-            <img src="../res/img/dollar.png" alt="box icon">
-            <div class="info">
-                <h3>$ <?php echo number_format($total_earnings) ?></h3>
-                <p>Earnings</p>
-            </div>
-        </div>
+      <?php include 'Subjects.php' ?>
     </div>
 
     <!-- CARDS CONTAINER -->
 
-    <div class="charts-container">
-        <div class="chart circle-chart">
-            <canvas id="myChart-circle" class="chart-design circle"></canvas>
-        </div>
-
-        <div class="chart">
-            <canvas id="myChart" class="chart-design"></canvas>
-        </div>
-    </div>
-
-    <div class="line-chart-container">
-        <div class="chart">
-            <canvas id="myChart-line" class="chart-design line"></canvas>
-        </div>
-    </div>
+    
 
     <!-- LATEST PRODUCTS -->
 
-    <h1>All Products</h1>
-    <hr color="#FF304F" width="90%" size="4">
-    <div class="wrap" style="margin: 20px 0;">
-        <form method="post">
-            <div class="search">
-                <input type="text" name="search_bar" class="searchTerm" placeholder="Search. . ."
-                       style="font-family: Cairo;">
-                <button type="submit" class="searchButton" name="submit-search">
-                    <i class="fa fa-search"></i>
-                </button>
-            </div>
-        </form>
-    </div>
-    <table id="customers" class="p-table">
-        <tr>
-            <th style='text-align: center;'>Product Image</th>
-            <th>Product ID</th>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Quantity</th>
-            <th>Buy Price</th>
-            <th>Sale Price</th>
-        </tr>
-
-        <?php
-        if (isset($_POST['submit-search'])) {
-            $search = mysqli_real_escape_string($con, $_POST['search_bar']);
-            $sql = "SELECT * FROM product WHERE name LIKE '%$search%' ORDER BY productID DESC";
-        } else {
-            $sql = "SELECT * FROM product ORDER BY productID DESC";
-        }
-        $result = mysqli_query($con, $sql);
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr class='product-row'>";
-            echo "<td align='center'><img src='../uploads/" . $row['product_image'] . "' style='width: 60px;' alt='product image'></td>";
-            echo "<td>" . $row['productID'] . "</td>";
-            echo "<td>" . $row['name'] . "</td>";
-            echo "<td>" . $row['category'] . "</td>";
-            echo "<td>" . $row['stock'] . "</td>";
-            echo "<td>" . $row['buy_price'] . "</td>";
-            echo "<td>" . $row['sale_price'] . "</td>";
-            echo "</tr>";
-        }
-        ?>
-    </table>
+    
+    
 </main>
 
 <?php include '../js/charts.php' ?>
