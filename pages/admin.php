@@ -209,6 +209,51 @@ $earningsTotal = 139;
             }
         }
 
+         @media (min-width: 768px) {
+            .navbar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100%; /* Full height */
+                z-index: 1000; /* Ensure it's above other content */
+            }
+
+            .content {
+                margin-left: 200px; /* Same width as the navbar */
+                padding: 20px; /* Adjust as needed */
+            }
+
+           
+        }
+
+        /* Styles for mobile */
+        @media (max-width: 767px) {
+            .navbar {
+                position: fixed;
+                bottom: 0;
+                width: 100%; /* Full width */
+                height: 60px; /* Adjust the height as needed */
+                display: flex;
+                justify-content: space-around;
+                z-index: 1000; /* Ensure it's above other content */
+            }
+
+            .navbar-nav {
+                display: flex;
+                flex-direction: row;
+                width: 100%;
+            }
+
+            .nav-item {
+                flex: 1;
+                text-align: center;
+            }
+
+            .content {
+                padding-bottom: 60px; /* Space for the fixed bottom navbar */
+            }
+        }
+
         .profile-container .ActionButtons .submit {
             grid-area: auto;
         }
@@ -326,7 +371,7 @@ $earningsTotal = 139;
 
 
 <!-- MAIN CONTENT -->
-<main class="content">
+<main class="content" >
 <?php include 'Subjects.php' ?>
     
 </main>
