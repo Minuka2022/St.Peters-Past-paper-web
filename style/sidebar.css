@@ -122,9 +122,7 @@ main{
 .active-link{
     background-color: var(--light-red);
 }
-.nav-link:hover{
-    background-color: var(--light-red);
-}
+
 
 /*FOR SMALL SCREENS */
 

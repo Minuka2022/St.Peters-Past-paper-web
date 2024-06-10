@@ -67,23 +67,29 @@ $earningsTotal = 139;
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../res/img/logo.svg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" 
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.min.js"
+            integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="../style/dashboard.css">
-    <link rel="stylesheet" href="../style/sidebar.css">
     <link rel="stylesheet" href="../style/forms.css">
     <link rel="stylesheet" href="../style/product.css">
     <link rel="stylesheet" href="../style/report.css">
     <link rel="stylesheet" href="../style/product_details_modal.css">
     <link rel="stylesheet" href="../style/select_text.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.min.js"></script>
+    <link rel="stylesheet" href="../style/sidebar.css">
 
     <style>
         .nav-link {
-            height: 4rem;
+            height: 4rem;   
         }
 
         .nav-link img {
@@ -321,23 +327,7 @@ $earningsTotal = 139;
 
 <!-- MAIN CONTENT -->
 <main class="content">
-    <h1>Dashboard</h1>
-    <h3>Choose grade     to manage papers</h3>
-    <hr color="#FF304F" width="90%" size="4">
-
-    <!-- CARDS CONTAINER -->
-
-    <div class="cards-container">
-      <?php include 'Subjects.php' ?>
-    </div>
-
-    <!-- CARDS CONTAINER -->
-
-    
-
-    <!-- LATEST PRODUCTS -->
-
-    
+<?php include 'Subjects.php' ?>
     
 </main>
 
