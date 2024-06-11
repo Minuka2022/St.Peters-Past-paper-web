@@ -16,7 +16,7 @@
                         </li>
                       
                         <li class="nav-item">
-                            <a class="nav-link" href="#about">About</a>
+                            <a class="nav-link" href="about-us.php">About</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="contact.php" >Contact Us</a>
