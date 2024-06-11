@@ -454,7 +454,7 @@ if (isset($_SESSION['customerID'])) {
                 aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <img src="https://www.stpeterscollege.lk/wp-content/uploads/2020/09/SPC_Web-logo-New.png" alt="" style="margin-bottom:10px; margin-right:-260px;">
+        <img src="https://www.stpeterscollege.lk/wp-content/uploads/2020/09/SPC_Web-logo-New.png" alt="" style="margin-bottom:10px; margin-right:0px;">
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <div class="d-flex justify-content-center w-100">
                     <ul class="navbar-nav mb-2 mb-lg-0" style="font-weight:bold;">
