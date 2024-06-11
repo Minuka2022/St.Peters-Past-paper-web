@@ -802,7 +802,7 @@ body {
     </div>
   </div>
 </div>
-
+<?php include 'footer.php' ?>
 <!-- SB Forms JS -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>

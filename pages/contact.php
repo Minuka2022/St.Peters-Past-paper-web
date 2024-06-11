@@ -697,6 +697,8 @@ body {
 </div>
 
 
+<?php include 'footer.php' ?>
+
 <!-- SB Forms JS -->
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
@@ -705,37 +707,6 @@ body {
         crossorigin="anonymous"></script>
 <script src="https://smtpjs.com/v3/smtp.js"></script>
 
-<script>
 
-    var form = document.querySelector('#contactForm');
-
-    function sendEmail(e) {
-        e.preventDefault();
-        var fullname = document.querySelector('#name');
-        var email = document.querySelector('#email');
-        var message = document.querySelector('#message');
-        var subject = document.querySelector('#subject');
-
-        //check if inputs are empty
-        if (fullname.value === '' || email.value === '' || message.value === '' || subject.value === '') {
-            swal("Oops!", "Please fill all the fields", "error");
-        } else if (email.value === "laghjajabdelatif@gmail.com") {
-            swal("Oops!", "Please enter another email!", "error");
-        } else {
-            Email.send({
-                SecureToken: "256820d4-e320-44aa-8809-5781e8144381",
-                To: 'laghjajabdelatif@gmail.com',
-                From: email.value,
-                Subject: subject.value,
-                Body: message.value
-            }).then(
-                message => swal("Success!", "Your message has been sent successfully!", "success")
-            );
-        }
-    };
-
-    form.addEventListener('submit', sendEmail);
-
-</script>
 </body>
 </html>
