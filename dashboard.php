@@ -1,4 +1,19 @@
 <!DOCTYPE html>
+
+<?php
+include './db/connection.php';
+$sql = "
+    SELECT grades.id, grades.name, COUNT(papers.id) as paper_count
+    FROM grades
+    LEFT JOIN subjects ON grades.id = subjects.grade_id
+    LEFT JOIN papers ON subjects.id = papers.subject_id
+    GROUP BY grades.id, grades.name
+    ORDER BY grades.id";
+
+$result = $conn->query($sql);
+
+
+?>
 <html lang="en">
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -49,7 +64,7 @@
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-            <a href="dashboard.html" class="logo">
+            <a href="dashboard.php" class="logo">
               <img
                 src="assets/img/SPCPTA.png"
                 alt="navbar brand"
@@ -75,14 +90,14 @@
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
               <li class="nav-item active">
-                <a href="dashboard.html" class="" aria-expanded="false">
+                <a href="dashboard.php" class="" aria-expanded="false">
                   <i class="fas fa-home"></i>
                   <p>Dashboard</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="Manage-Subjects.html">
+                <a href="Manage-Subjects.php">
                   <i class="fas fa-layer-group"></i>
                   <p>Subjects</p>
                 </a>
@@ -217,167 +232,22 @@
               }
             </style>
             <div class="row">
-              <div class="col-md-4">
-                <a
-                  href="Manage-papers.html"
-                  style="text-decoration: none"
-                >
-                  <div class="card card-school">
-                    <div class="card-body skew-shadow" style="color: white">
-                      <h1>Grade 1</h1>
-                      <div class="pull-right">
-                        <h3 class="fw-bold op-8">40 Papers</h3>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 2</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
+            <?php while ($row = $result->fetch_assoc()) { ?>
+                <div class="col-md-4">
+                    <a href="Manage-papers.html?grade_id=<?php echo $row['id']; ?>" style="text-decoration: none">
+                        <div class="card card-school">
+                            <div class="card-body skew-shadow" style="color: white">
+                                <h1><?php echo $row['name']; ?></h1>
+                                <div class="pull-right">
+                                    <h3 class="fw-bold op-8"><?php echo $row['paper_count']; ?> Papers</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 3</h1>
+            <?php } ?>
 
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 4</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 5</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 6</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 7</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 8</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 9</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 10</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 11</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 12</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-md-4">
-                <div class="card card-school">
-                  <div class="card-body skew-shadow" style="color: white">
-                    <h1>Grade 13</h1>
-
-                    <div class="pull-right">
-                      <h3 class="fw-bold op-8">40 Papers</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              
           </div>
         </div>
 
@@ -430,3 +300,6 @@
     <script src="assets/js/setting-demo.js"></script>
   </body>
 </html>
+<?php
+$conn->close();
+?>
