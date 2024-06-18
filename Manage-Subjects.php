@@ -309,6 +309,27 @@
     </div>
 </div>
 
+<!-- Edit Subject Modal -->
+<div class="modal fade" id="editSubjectModal" tabindex="-1" aria-labelledby="editSubjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editSubjectModalLabel">Edit Subject</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editSubjectForm">
+                    <input type="hidden" id="editSubjectId">
+                    <div class="mb-3">
+                        <label for="editSubjectName" class="form-label">Subject Name</label>
+                        <input type="text" class="form-control" id="editSubjectName" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
@@ -378,7 +399,6 @@
       // });
 
 
-
       document.addEventListener('DOMContentLoaded', function () {
     // Fetch grades directly from PHP
     const grades = <?php
@@ -407,7 +427,7 @@
     // Fetch subject data initially
     fetchSubjectData();
 
-    // Handle form submission
+    // Handle form submission for adding subjects
     document.getElementById('addSubjectBtn').addEventListener('click', function () {
         const formData = new FormData(document.getElementById('addSubjectForm'));
         fetch('add_subject.php', {
@@ -438,78 +458,113 @@
             }
         });
     });
+
+    // Handle form submission for editing subjects
+    document.getElementById('editSubjectForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        const subjectId = document.getElementById('editSubjectId').value;
+        const subjectName = document.getElementById('editSubjectName').value;
+        const formData = new FormData();
+        formData.append('id', subjectId);
+        formData.append('name', subjectName);
+
+        fetch('edit_subject.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Close the modal and reset the form
+                closeEditSubjectModal();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Subject updated successfully',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    // Re-fetch the subject data to update the table
+                    fetchSubjectData();
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to update subject',
+                    text: data.message
+                });
+            }
+        });
+    });
+
     // Event listener for removing a subject
     document.getElementById('subjectTableBody').addEventListener('click', function (event) {
-    if (event.target.classList.contains('btn-remove-subject')) {
-        const subjectId = event.target.parentElement.querySelector('.subject-id').value;
-        if (!isNaN(parseInt(subjectId))) {
-    // Subject ID is a valid integer
-    // Proceed with your code here
-    removeSubject(parseInt(subjectId));
-} else {
-    // Subject ID is not a valid integer
-    // Handle the error or display a message to the user
-    console.error('Invalid subject ID:', subjectId);
-}
-
-    }
-});
-
-
-
-
+        if (event.target.classList.contains('btn-remove-subject')) {
+            const subjectId = event.target.parentElement.querySelector('.subject-id').value;
+            if (!isNaN(parseInt(subjectId))) {
+                // Subject ID is a valid integer
+                // Proceed with your code here
+                removeSubject(parseInt(subjectId));
+            } else {
+                // Subject ID is not a valid integer
+                // Handle the error or display a message to the user
+                console.error('Invalid subject ID:', subjectId);
+            }
+        } else if (event.target.classList.contains('btn-edit-subject')) {
+            const subjectId = event.target.closest('.form-button-action').querySelector('.subject-id').value;
+            const subjectName = event.target.closest('tr').querySelector('td:nth-child(2)').innerText;
+            openEditSubjectModal(subjectId, subjectName);
+        }
+    });
 
     function removeSubject(subjectId) {
-      
-    Swal.fire({
-        title: 'Are you sure?',
-        text: 'You are about to remove this subject. This action cannot be undone.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, remove it!',
-        cancelButtonText: 'Cancel'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // User confirmed, proceed with removing the subject
-            alert('Subject ID: ' + subjectId);
-            fetch('remove_subject.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ id: subjectId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Subject removed successfully',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        // Re-fetch subject data to update the table
-                        fetchSubjectData();
-                    });
-                } else {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You are about to remove this subject. This action cannot be undone.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, remove it!',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // User confirmed, proceed with removing the subject
+                fetch('remove_subject.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded' // Ensure the correct content type
+                    },
+                    body: `id=${encodeURIComponent(subjectId)}` // Send the ID as a URL-encoded string
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: `Subject removed successfully (ID: ${data.id})`,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            // Re-fetch subject data to update the table
+                            fetchSubjectData();
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed to remove subject',
+                            text: data.message
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error removing subject:', error);
                     Swal.fire({
                         icon: 'error',
                         title: 'Failed to remove subject',
-                        text: data.message
+                        text: 'An error occurred while processing your request. Please try again later.'
                     });
-                }
-            })
-            .catch(error => {
-                console.error('Error removing subject:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Failed to remove subject',
-                    text: 'An error occurred while processing your request. Please try again later.'
                 });
-            });
-        }
-    });
-}
+            }
+        });
+    }
 
     function fetchSubjectData() {
         fetch('get_subjects.php')
@@ -525,14 +580,14 @@
                         <td>${subject.papers}</td>
                         <td>
                             <div class="form-button-action">
-                                <button type="button" class="btn btn-link btn-primary btn-lg" data-bs-toggle="tooltip" title="Edit Task">
+                                <button type="button" class="btn btn-link btn-primary btn-lg btn-edit-subject" data-bs-toggle="tooltip" title="Edit Task">
                                     <i class="fa fa-edit"></i>
                                 </button>
-                               <!-- Hidden input field to store subject ID -->
-                              <input type="hidden" class="subject-id" value="${subject.id}">
-                              <button type="button" class="btn btn-link btn-danger btn-remove-subject" data-bs-toggle="tooltip" title="Remove">
-                                  <i class="fa fa-times"></i>
-                              </button>
+                                <!-- Hidden input field to store subject ID -->
+                                <input type="hidden" class="subject-id" value="${subject.id}">
+                                <button type="button" class="btn btn-link btn-danger btn-remove-subject" data-bs-toggle="tooltip" title="Remove">
+                                    <i class="fa fa-times"></i>
+                                </button>
                             </div>
                         </td>
                     `;
@@ -555,6 +610,23 @@
         addRowModal.setAttribute('style', 'display: none');
         document.querySelector('.modal-backdrop').remove();
         document.getElementById('addSubjectForm').reset();
+    }
+
+    // Function to open the edit subject modal and populate with current data
+    function openEditSubjectModal(subjectId, subjectName) {
+        document.getElementById('editSubjectId').value = subjectId;
+        document.getElementById('editSubjectName').value = subjectName;
+        const editSubjectModal = new bootstrap.Modal(document.getElementById('editSubjectModal'));
+        editSubjectModal.show();
+    }
+
+    // Function to close the edit subject modal and reset form
+    function closeEditSubjectModal() {
+        const editSubjectModal = document.getElementById('editSubjectModal');
+        editSubjectModal.classList.remove('show');
+        editSubjectModal.setAttribute('aria-hidden', 'true');
+        editSubjectModal.setAttribute('style', 'display: none');
+        document.querySelector('.modal-backdrop').remove();
     }
 
     function initializeDataTable() {
@@ -584,7 +656,7 @@
             },
         });
     }
-}); 
+});
     </script>
   </body>
 </html>

@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate input
     if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
         http_response_code(400);
-        echo json_encode(array('success' => false, 'message' => 'Invalid or missing subject ID'));
+        echo json_encode(array('success' => false, 'message' => 'Invalid or missing subject ID', 'id' => isset($_POST['id']) ? $_POST['id'] : null));
         exit;
     }
 
@@ -29,9 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Check if any rows were affected
     if ($stmt->affected_rows > 0) {
-        echo json_encode(array('success' => true));
+        echo json_encode(array('success' => true, 'id' => $subjectId));
     } else {
-        echo json_encode(array('success' => false, 'message' => 'No subject found with the given ID'));
+        echo json_encode(array('success' => false, 'message' => 'No subject found with the given ID', 'id' => $subjectId));
     }
 } else {
     http_response_code(405); // Method Not Allowed
