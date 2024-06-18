@@ -114,7 +114,7 @@ input {
 <body>
 
 
-<?php include('loading.php'); ?>
+
 
 <div class="container">
   <div class="login-card">

@@ -5,7 +5,7 @@ $DBusername = "root";
 $DBpassword = "";
 $DBname = "ecommerce";
 
-$conn = new mysqli($serverName, $DBusername, $DBpassword, $DBname);
-if ($conn->connect_error) {
+$con = new mysqli($serverName, $DBusername, $DBpassword, $DBname);
+if ($con->connect_error) {
     echo "Failed to connect: " .mysqli_connect_error();
 }

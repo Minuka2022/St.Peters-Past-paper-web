@@ -450,130 +450,280 @@ if (isset($_SESSION['customerID'])) {
 
 <?php include 'navbar.php'; ?>
 
-<main>
+
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins|Ubuntu&display=swap');
+
+    .services {
+        background-color: #fff;
+        margin: 16px 0;
+    }
+
+    h1 {
+        font-family: Cairo;
+        font-size: 40px;
+        padding: 8px;
+    }
+
+    hr {
+        color: red;
+        width: 200px;
+    }
+
+.box {
+    position: relative;
+    width: 100%;
+   
+}
+
+
+
+
+
+
+    .our-services {
+        margin-top: 75px;
+        padding: 0 60px;
+        min-height: 198px;
+        text-align: center;
+        border-radius: 10px;
+        background-color: #fff;
+        transition: all .4s ease-in-out;
+        box-shadow: 0 0 25px 0 rgba(20, 27, 202, .17)
+    }
+
+    .our-services .icon {
+        margin-bottom: -21px;
+        transform: translateY(-50%);
+        text-align: center
+    }
+
+    .our-services h4,
+    .our-services:hover p {
+        color: #01204E
+    }
+
+    .speedup:hover {
+        box-shadow: 0 0 25px 0 rgba(20, 27, 201, .05);
+        cursor: pointer;
+        background-image: linear-gradient(-45deg, #010047 0%, #010047 100%)
+    }
+
+        .settings {
+        background-color: white; /* Set the background color to white */
+        
+        box-shadow: none; /* No shadow initially */
+        cursor: pointer;
+        transition: box-shadow 0.3s ease, background-image 0.3s ease, background-color 0.3s ease, border 0.3s ease; /* Smooth transition */
+    }
+
+        .settings:hover {
+        box-shadow: 0 0 25px 0 rgb(1, 32, 78 , 0.5) ; /* Blue drop shadow on hover */
     
-    </script>
-    <!-- <?php include './client/categories_dropdown.php'; ?> -->
+        
+    }
+
+    .privacy:hover {
+        box-shadow: 0 0 25px 0 rgba(20, 27, 201, .05);
+        cursor: pointer;
+        background-image: linear-gradient(-45deg, #3615e7 0%, #44a2f6 100%)
+    }
+
+    .backups:hover {
+        box-shadow: 0 0 25px 0 rgba(20, 27, 201, .05);
+        cursor: pointer;
+        background-image: linear-gradient(-45deg, #fc6a0e 0%, #fdb642 100%)
+    }
+
+    .ssl:hover {
+        box-shadow: 0 0 25px 0 rgba(20, 27, 201, .05);
+        cursor: pointer;
+        background-image: linear-gradient(-45deg, #8d40fb 0%, #5a57fb 100%)
+    }
+
+    .database:hover {
+        box-shadow: 0 0 25px 0 rgba(20, 27, 201, .05);
+        cursor: pointer;
+        background-image: linear-gradient(-45deg, #27b88d 0%, #22dd73 100%)
+    }
+    .database{
+        margin-bottom: 24px;
+    }
+.table-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+    width: 100%; /* Ensure full width */
+    max-width: 100%; /* Ensure full width */
+}
+
+.content-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 1em;
+    width: 100%; /* Use 100% width to make it responsive */
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+}
+
+.content-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.content-table th,
+.content-table td {
+    padding: 12px 15px;
+    position: relative; /* Add relative positioning to enable absolute positioning of buttons */
+}
+
+.content-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.content-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.content-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.content-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+
+.content-table button {
+    padding: 8px 16px;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    position: absolute; /* Use absolute positioning */
+    top: 50%; /* Center vertically */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+}
+
+.download-button {
+    background-color: #009879;
+    right: 125px; /* Adjust position */
+}
+
+.download-button:hover {
+    background-color: #007861;
+}
+
+.preview-button {
+    background-color: #800080;
+    right: 15px; /* Position to the right */
+    margin-left: 10px; /* Add margin between buttons */
+}
+
+.preview-button:hover {
+    background-color: #660066;
+}
+
+/* Add media queries for additional responsiveness */
+@media (max-width: 768px) {
+    .content-table thead {
+        display: none; /* Hide the header on smaller screens */
+    }
+
+    .content-table, .content-table tbody, .content-table tr, .content-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .content-table tr {
+        margin-bottom: 15px;
+    }
+
+    .content-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .content-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 50%;
+        padding-left: 15px;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .content-table button {
+        position: static; /* Revert to static positioning on small screens */
+        margin-top: 10px; /* Add margin for spacing */
+        transform: none; /* Remove transform */
+        width: 100%; /* Full width button on small screens */
+    }
+
+    .download-button, .preview-button {
+        right: 0;
+    }
+
+    .preview-button {
+        margin-left: 0; /* Remove margin on small screens */
+    }
+}
 
 
-</main>
 
-<form action="index.php" id="reload" method="get" style="display: none;">
-    <input type="number" id="per_page_hidden" name="per_page" value="<?php echo $nbProductsInPage; ?>">
-    <input type="number" id="page_h" name="page" value="<?php echo $currentPage; ?>">
-    <input type="number" id="sort_by_h" name="sort_by" value="<?php echo $sort_by; ?>">
-    <input type="text" id="filter_by_h" name="filter_by" value="<?php echo $filter_by; ?>">
-    <input type="search" id="search_h" name="search" value="<?php echo $searchQuery; ?>">
-</form>
+
+</style>
+
+
+
+
+<div class="container-fluid mb-5 services" id="services">
+    <div class="text-center mt-5">
+        <h1>Grade 3  </h1>
+        <center>
+            <hr size="6">
+        </center>
+    </div>
+      <?php include './client/categories_dropdown.php'; ?>
+
+<div class="table-container">
+    <table class="content-table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Paper Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="paper-list">
+            <!-- Sample record -->
+            <tr>
+                <td data-label="No">1</td>
+                <td data-label="Paper Name">Sample Paper 1</td>
+                <td data-label="Action">
+                    <button class="download-button" onclick="window.open('papers/sample_paper_1.pdf', '_blank')">Download</button>
+                    <button class="preview-button" onclick="window.open('papers/sample_paper_1_preview.pdf', '_blank')">Preview</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 
 <!-- ALL POP UPS MODALS -->
 <?php include './client/pop_ups.php' ?>
-<?php include 'Past-paper-table.php' ?>
+
 <?php include 'footer.php' ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="./js/addToCart.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script language="JavaScript">
 
-    function showLogOut() {
-        document.getElementById("log-out-pop").classList.toggle("hidden");
-    }
-
-    var hidden_form = document.forms["reload"];
-
-    var per_page_hidden = document.getElementById("per_page_hidden");
-    var page_hidden = document.getElementById("page_h");
-    var sort_hidden = document.getElementById("sort_by_h");
-    var filter_hidden = document.getElementById("filter_by_h");
-    var search_hidden = document.getElementById("search_h");
-
-    const category_menu = document.getElementById('categories_list');
-    var sort_menu = document.getElementById("sort_selector");
-    var per_page_menu = document.getElementById("per_page_selector");
-
-    function setParmeters() {
-        filter_hidden.value = category_menu.value;
-        sort_hidden.value = sort_menu.value;
-        per_page_hidden.value = per_page_menu.value;
-    }
-
-    //submit search value
-    const searchButton = document.getElementById('search-button');
-    const searchBar = document.getElementById('search-input');
-    searchButton.onclick = function (e) {
-        e.preventDefault();
-        search_hidden.value = searchBar.value;
-        document.forms["reload"].submit();
-    }
-
-    //submit filter value
-    const category_link = document.getElementsByClassName("category_option");
-
-    for (let i = 0; i < category_link.length; i++) {
-        category_link[i].addEventListener("click", function (evt) {
-            setParmeters();
-            document.forms["reload"].submit();
-        })
-    }
-
-    //submit sort value
-    const sort_link = document.getElementsByClassName("sort_option");
-
-    for (let i = 0; i < sort_link.length; i++) {
-        sort_link[i].addEventListener("click", function (evt) {
-            setParmeters();
-            document.forms["reload"].submit();
-        })
-    }
-
-    //submit page number
-    var slider_nav = document.getElementById('slider-nav');
-    var pages_links = slider_nav.querySelectorAll('label');
-    var pages_radios = document.getElementsByClassName('pages_radios');
-
-    for (let i = 0; i < pages_links.length; i++) {
-        pages_links[i].setAttribute('index', i);
-        pages_links[i].addEventListener("click", function (e) {
-            var index = pages_links[i].getAttribute('index')
-            pages_radios[index].checked = true;
-            page_hidden.value = pages_radios[index].value;
-            document.forms["reload"].submit();
-        })
-    }
-
-    //submit per page value
-    const per_page_link = document.getElementsByClassName("per_page_option");
-    for (let i = 0; i < per_page_link.length; i++) {
-        per_page_link[i].addEventListener("click", function (evt) {
-            setParmeters();
-            document.forms["reload"].submit();
-        })
-    }
-
-    //logout button
-    if (isLogin) {
-        const logout_button = document.getElementById('log-out');
-        logout_button.addEventListener("click", logout);
-    }
-
-    function logout() {
-        swal({
-            title: "Are you sure?",
-            text: "You will be logged out",
-            icon: "warning",
-            buttons: true,
-            dangerMode: true,
-        })
-            .then((willDelete) => {
-                if (willDelete) {
-                    window.location.href = "./client/login.php";
-                } else {
-                    swal("Enjoy a great shopping experience!");
-                }
-            });
-    }
-
-    //view product details
-</script>
 </body>
 </html>
