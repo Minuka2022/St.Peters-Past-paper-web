@@ -241,7 +241,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addPaperForm">
+                <form id="addPaperForm" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="paperYear" class="form-label">Year</label>
                         <select class="form-select" id="paperYear" name="year" required>
@@ -256,6 +256,8 @@
                             <!-- Options will be populated dynamically using JavaScript -->
                         </select>
                     </div>
+                    <input type="hidden" id="gradeId" name="grade_id" value="<?php echo htmlspecialchars($_GET['grade_id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+
 
                     <div class="mb-3">
                         <label for="paperTerm" class="form-label">Term</label>
@@ -279,7 +281,7 @@
 
                     <div class="mb-3">
                         <label for="paperFile" class="form-label">Upload Paper (PDF or Word)</label>
-                        <input type="file" class="form-control" id="paperFile" name="file_path" accept=".pdf,.doc,.docx" required>
+                        <input type="file" class="form-control" id="paperFile" name="paper_file" accept=".pdf,.doc,.docx" required>
                     </div>
                 </form>
             </div>
@@ -521,63 +523,68 @@
             console.error('Error fetching subjects:', error);
         });
 
-    // Handle form submission
-    document.getElementById('addPaperBtn').addEventListener('click', function () {
-        // Validate form
-        const formElements = addPaperForm.elements;
-        let formIsValid = true;
+   // Handle form submission
+document.getElementById('addPaperBtn').addEventListener('click', function () {
+    // Validate form
+    const formElements = addPaperForm.elements;
+    let formIsValid = true;
 
-        for (let element of formElements) {
-            if (element.required && !element.value) {
-                formIsValid = false;
-                break;
-            }
+    for (let element of formElements) {
+        if (element.required && !element.value) {
+            formIsValid = false;
+            break;
         }
+    }
 
-        if (formIsValid) {
-            const formData = new FormData(addPaperForm);
-            fetch('add_paper.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Close the modal and reset the form
-                    $('#addRowModal').modal('hide');
-                    addPaperForm.reset();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Paper added successfully',
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        // Optionally, refresh the page or update the papers list
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Failed to add paper',
-                        text: data.message
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error adding paper:', error);
+    if (formIsValid) {
+        // Log the form data before submitting
+        console.log('Form data before submission:', new FormData(addPaperForm));
+
+        // Proceed with form submission
+        const formData = new FormData(addPaperForm);
+        fetch('add_paper.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Close the modal and reset the form
+                $('#addRowModal').modal('hide');
+                addPaperForm.reset();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Paper added successfully',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    // Optionally, refresh the page or update the papers list
+                });
+            } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Failed to add paper',
-                    text: 'An error occurred while processing your request. Please try again later.'
+                    text: data.message
                 });
-            });
-        } else {
+            }
+        })
+        .catch(error => {
+            console.error('Error adding paper:', error);
             Swal.fire({
-                icon: 'warning',
-                title: 'Validation Error',
-                text: 'Please fill in all required fields.'
+                icon: 'error',
+                title: 'Failed to add paper',
+                text: 'An error occurred while processing your request. Please try again later.'
             });
-        }
-    });
+        });
+    } else {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Validation Error',
+            text: 'Please fill in all required fields.'
+        });
+    }
+});
+
 });
 
 
