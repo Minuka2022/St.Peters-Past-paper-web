@@ -233,91 +233,66 @@
                   </div>
                   <div class="card-body">
                     <!-- Modal -->
-                    <div
-                      class="modal fade"
-                      id="addRowModal"
-                      tabindex="-1"
-                      role="dialog"
-                      aria-hidden="true"
-                    >
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header border-0">
-                            <h5 class="modal-title">
-                              <span class="fw-mediumbold"> New</span>
-                              <span class="fw-light"> Row </span>
-                            </h5>
-                            <button
-                              type="button"
-                              class="close"
-                              data-dismiss="modal"
-                              aria-label="Close"
-                            >
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <p class="small">
-                              Create a new row using this form, make sure you
-                              fill them all
-                            </p>
-                            <form>
-                              <div class="row">
-                                <div class="col-sm-12">
-                                  <div class="form-group form-group-default">
-                                    <label>Name</label>
-                                    <input
-                                      id="addName"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="fill name"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-6 pe-0">
-                                  <div class="form-group form-group-default">
-                                    <label>Position</label>
-                                    <input
-                                      id="addPosition"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="fill position"
-                                    />
-                                  </div>
-                                </div>
-                                <div class="col-md-6">
-                                  <div class="form-group form-group-default">
-                                    <label>Office</label>
-                                    <input
-                                      id="addOffice"
-                                      type="text"
-                                      class="form-control"
-                                      placeholder="fill office"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                          <div class="modal-footer border-0">
-                            <button
-                              type="button"
-                              id="addRowButton"
-                              class="btn btn-primary"
-                            >
-                              Add
-                            </button>
-                            <button
-                              type="button"
-                              class="btn btn-danger"
-                              data-dismiss="modal"
-                            >
-                              Close
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+                    <div class="modal fade" id="addRowModal" tabindex="-1" aria-labelledby="addRowModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRowModalLabel">Add Paper</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addPaperForm">
+                    <div class="mb-3">
+                        <label for="paperYear" class="form-label">Year</label>
+                        <select class="form-select" id="paperYear" name="year" required>
+                            <!-- Year options will be populated dynamically -->
+                        </select>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="subjectSelect" class="form-label">Subject</label>
+                        <select class="form-select" id="subjectSelect" name="subject_id" required>
+                            <option value="">Select Subject</option>
+                            <!-- Options will be populated dynamically using JavaScript -->
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="paperTerm" class="form-label">Term</label>
+                        <select class="form-select" id="paperTerm" name="term" required>
+                           
+                            <option value="1st term">1st term</option>
+                            <option value="2nd term">2nd term</option>
+                            <option value="3rd term">3rd term</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="paperMedium" class="form-label">Medium</label>
+                        <select class="form-select" id="paperMedium" name="medium" required>
+                           
+                            <option value="english">English</option>
+                            <option value="sinhala">Sinhala</option>
+                            <option value="tamil">Tamil</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="paperFile" class="form-label">Upload Paper (PDF or Word)</label>
+                        <input type="file" class="form-control" id="paperFile" name="file_path" accept=".pdf,.doc,.docx" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="addPaperBtn">Add Paper</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
                     <div class="table-responsive">
                       <table
@@ -439,9 +414,11 @@
       <!-- End Custom template -->
     </div>
     <!--   Core JS Files   -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="./assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="./assets/js/core/popper.min.js"></script>
     <script src="./assets/js/core/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <!-- jQuery Scrollbar -->
     <script src="./assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
@@ -507,6 +484,103 @@
           $("#addRowModal").modal("hide");
         });
       });
+
+      document.addEventListener('DOMContentLoaded', function () {
+    const addPaperForm = document.getElementById('addPaperForm');
+    const paperYearSelect = document.getElementById('paperYear');
+    const subjectSelect = document.getElementById('subjectSelect');
+    const urlParams = new URLSearchParams(window.location.search);
+    const gradeId = urlParams.get('grade_id');
+
+    // Populate year dropdown with current year and past 30 years
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= currentYear - 30; year--) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.text = year;
+        paperYearSelect.appendChild(option);
+    }
+
+    // Fetch subjects based on grade_id and populate the subject dropdown
+    fetch(`get_subjects_by_grade.php?grade_id=${gradeId}`)
+        .then(response => response.json())
+        .then(data => {
+            subjectSelect.innerHTML = '<option value="">Select Subject</option>';
+            if (Array.isArray(data)) {
+                data.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.id;
+                    option.text = subject.name;
+                    subjectSelect.appendChild(option);
+                });
+            } else {
+                console.error('Unexpected response format:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching subjects:', error);
+        });
+
+    // Handle form submission
+    document.getElementById('addPaperBtn').addEventListener('click', function () {
+        // Validate form
+        const formElements = addPaperForm.elements;
+        let formIsValid = true;
+
+        for (let element of formElements) {
+            if (element.required && !element.value) {
+                formIsValid = false;
+                break;
+            }
+        }
+
+        if (formIsValid) {
+            const formData = new FormData(addPaperForm);
+            fetch('add_paper.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close the modal and reset the form
+                    $('#addRowModal').modal('hide');
+                    addPaperForm.reset();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Paper added successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        // Optionally, refresh the page or update the papers list
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to add paper',
+                        text: data.message
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error adding paper:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to add paper',
+                    text: 'An error occurred while processing your request. Please try again later.'
+                });
+            });
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please fill in all required fields.'
+            });
+        }
+    });
+});
+
+
     </script>
   </body>
 </html>

@@ -234,7 +234,7 @@ $result = $conn->query($sql);
             <div class="row">
             <?php while ($row = $result->fetch_assoc()) { ?>
                 <div class="col-md-4">
-                    <a href="Manage-papers.html?grade_id=<?php echo $row['id']; ?>" style="text-decoration: none">
+                    <a href="Manage-papers.php?grade_id=<?php echo $row['id']; ?>" style="text-decoration: none">
                         <div class="card card-school">
                             <div class="card-body skew-shadow" style="color: white">
                                 <h1><?php echo $row['name']; ?></h1>
