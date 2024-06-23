@@ -198,7 +198,7 @@
         <div class="container">
           <div class="page-inner">
             <div class="page-header">
-              <h3 class="fw-bold mb-3">Grade 3 papers</h3>
+              <h3 class="fw-bold mb-3">Grade <?php echo htmlspecialchars($_GET['grade_id'] ?? '', ENT_QUOTES, 'UTF-8'); ?> papers</h3>
               <ul class="breadcrumbs mb-3">
                 <li class="nav-home">
                   <a href="#">
@@ -293,99 +293,36 @@
     </div>
 </div>
 
+<div class="table-responsive">
+        <table id="multi-filter-select" class="display table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Year</th>
+                    <th>Term</th>
+                    <th>Medium</th>
+                    <th>Paper name</th>
+                    <th style="width: 10%">Action</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Subject</th>
+                    <th>Year</th>
+                    <th>Term</th>
+                    <th>Medium</th>
+                </tr>
+            </tfoot>
+            <tbody id="papersTableBody">
+                <!-- Rows will be populated dynamically using JavaScript -->
+            </tbody>
+        </table>
+    </div>
 
 
 
-                    <div class="table-responsive">
-                      <table
-                        id="multi-filter-select"
-                        class="display table table-striped table-hover"
-                      >
-                        <thead>
-                          <tr>
 
-                            <th>Subject</th>
-                            <th>Year</th>
-                            <th>Term</th>
-                            <th>Medium</th>
-                            <th>Paper name</th>
-                           
-                            <th style="width: 10%">Action</th>
-                          </tr>
-                        </thead>
-                        <tfoot>
-                          <tr>
-                            <th>Subject</th>
-                            <th>Year</th>
-                            <th>Term</th>
-                            <th>Medium</th>
-                          
-                          </tr>
-                        </tfoot>
-                        <tbody>
-                          <tr>
-                            <td>Maths</td>
-                            <td>2023</td>
-                            <td>Mid</td>
-                             <td>sinhala</td>
-                            <td>2024mid paper.pdf</td>
-                           
-                            <td>
-                              <div class="form-button-action">
-                                <button
-                                  type="button"
-                                  data-bs-toggle="tooltip"
-                                  title=""
-                                  class="btn btn-link btn-primary btn-lg"
-                                  data-original-title="Edit Task"
-                                >
-                                  <i class="fa fa-edit"></i>
-                                </button>
-                                <button
-                                  type="button"
-                                  data-bs-toggle="tooltip"
-                                  title=""
-                                  class="btn btn-link btn-danger"
-                                  data-original-title="Remove"
-                                >
-                                  <i class="fa fa-times"></i>
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>Science</td>
-                            <td>2023</td>
-                            <td>Mid</td>
-                             <td>sinhala</td>
-                            <td>2023mid paper.pdf</td>
-                             
-                            <td>
-                              <div class="form-button-action">
-                                <button
-                                  type="button"
-                                  data-bs-toggle="tooltip"
-                                  title=""
-                                  class="btn btn-link btn-primary btn-lg"
-                                  data-original-title="Edit Task"
-                                >
-                                  <i class="fa fa-edit"></i>
-                                </button>
-                                <button
-                                  type="button"
-                                  data-bs-toggle="tooltip"
-                                  title=""
-                                  class="btn btn-link btn-danger"
-                                  data-original-title="Remove"
-                                >
-                                  <i class="fa fa-times"></i>
-                                </button>
-                              </div>
-                            </td>
-                          </tr>
-                                                  </tbody>
-                      </table>
-                    </div>
+
                   </div>
                 </div>
               </div>
@@ -406,6 +343,13 @@
           </div>
         </footer>
       </div>
+
+
+
+
+      <script>
+       
+    </script>
 
       <!-- Custom template | don't include it in your project! -->
       
@@ -431,68 +375,103 @@
     <!-- Kaiadmin DEMO methods, don't include it in your project! -->
     <script src="./assets/js/setting-demo2.js"></script>
     <script>
-      $(document).ready(function () {
-        $("#basic-datatables").DataTable({});
+document.addEventListener('DOMContentLoaded', function () {
+  
+    const urlParams = new URLSearchParams(window.location.search);
+    const gradeId = urlParams.get('grade_id');
+  
+    if (gradeId) {
+      initializeDataTable();
+      fetchPapers(gradeId);
+           // Initialize DataTables
+   
+     
+    } else {
+        console.error('Grade ID not found in URL parameters.');
+    }
 
-        $("#multi-filter-select").DataTable({
-          pageLength: 5,
-          initComplete: function () {
-            this.api()
-              .columns()
-              .every(function () {
-                var column = this;
-                var select = $(
-                  '<select class="form-select"><option value=""></option></select>'
-                )
-                  .appendTo($(column.footer()).empty())
-                  .on("change", function () {
-                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+    initializeForm(gradeId);
+});
 
-                    column
-                      .search(val ? "^" + val + "$" : "", true, false)
-                      .draw();
-                  });
+function fetchPapers(gradeId) {
+    fetch(`fetch_papers.php?grade_id=${gradeId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+              
+                const papersTableBody = document.getElementById('papersTableBody');
+                papersTableBody.innerHTML = ''; // Clear existing rows
 
-                column
-                  .data()
-                  .unique()
-                  .sort()
-                  .each(function (d, j) {
-                    select.append(
-                      '<option value="' + d + '">' + d + "</option>"
-                    );
-                  });
-              });
-          },
-        });
+                data.papers.forEach(paper => {
+                    const row = document.createElement('tr');
 
-        // Add Row
-        $("#add-row").DataTable({
-          pageLength: 5,
-        });
+                    row.innerHTML = `
+                        <td>${paper.subject}</td>
+                        <td>${paper.year}</td>
+                        <td>${paper.term}</td>
+                        <td>${paper.medium}</td>
+                        <td>${paper.paper_name}</td>
+                        <td>
+                            <div class="form-button-action">
+                                <button type="button" class="btn btn-link btn-primary btn-lg btn-edit-paper" data-bs-toggle="tooltip" title="Edit Task">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                                <!-- Hidden input field to store paper ID -->
+                                <input type="hidden" class="paper-id" value="${paper.paper_id}">
+                                <button type="button" class="btn btn-link btn-danger btn-remove-paper" data-bs-toggle="tooltip" title="Remove">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
 
-        var action =
-          '<td> <div class="form-button-action"> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-bs-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+                    papersTableBody.appendChild(row);
+                });
 
-        $("#addRowButton").click(function () {
-          $("#add-row")
-            .dataTable()
-            .fnAddData([
-              $("#addName").val(),
-              $("#addPosition").val(),
-              $("#addOffice").val(),
-              action,
-            ]);
-          $("#addRowModal").modal("hide");
-        });
-      });
+               
+                $('#multi-filter-select').DataTable().clear().rows.add($('#papersTableBody').find('tr')).draw();
+           
+            } else {
+                console.error(data.message);
+            }
+        })
+        .catch(error => console.error('Error fetching papers:', error));
+}
+function initializeDataTable() {
+  
+  $('#multi-filter-select').DataTable({
+            pageLength: 5,
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        var column = this;
+                        var select = $('<select class="form-select"><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                                column
+                                    .search(val ? '^' + val + '$' : '', true, false)
+                                    .draw();
+                            });
+                        column
+                            .data()
+                            .unique()
+                            .sort()
+                            .each(function (d, j) {
+                                select.append('<option value="' + d + '">' + d + '</option>');
+                            });
+                    });
+            },
+        }); 
+}
 
-      document.addEventListener('DOMContentLoaded', function () {
+
+function initializeForm(gradeId) {
+ 
     const addPaperForm = document.getElementById('addPaperForm');
     const paperYearSelect = document.getElementById('paperYear');
     const subjectSelect = document.getElementById('subjectSelect');
-    const urlParams = new URLSearchParams(window.location.search);
-    const gradeId = urlParams.get('grade_id');
 
     // Populate year dropdown with current year and past 30 years
     const currentYear = new Date().getFullYear();
@@ -523,69 +502,71 @@
             console.error('Error fetching subjects:', error);
         });
 
-   // Handle form submission
-document.getElementById('addPaperBtn').addEventListener('click', function () {
-    // Validate form
-    const formElements = addPaperForm.elements;
-    let formIsValid = true;
+    // Handle form submission
+    document.getElementById('addPaperBtn').addEventListener('click', function () {
+        // Validate form
+        const formElements = addPaperForm.elements;
+        let formIsValid = true;
 
-    for (let element of formElements) {
-        if (element.required && !element.value) {
-            formIsValid = false;
-            break;
+        for (let element of formElements) {
+            if (element.required && !element.value) {
+                formIsValid = false;
+                break;
+            }
         }
-    }
 
-    if (formIsValid) {
-        // Log the form data before submitting
-        console.log('Form data before submission:', new FormData(addPaperForm));
+        if (formIsValid) {
+            // Log the form data before submitting
+            console.log('Form data before submission:', new FormData(addPaperForm));
 
-        // Proceed with form submission
-        const formData = new FormData(addPaperForm);
-        fetch('add_paper.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Close the modal and reset the form
-                $('#addRowModal').modal('hide');
-                addPaperForm.reset();
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Paper added successfully',
-                    showConfirmButton: false,
-                    timer: 1500
-                }).then(() => {
-                    // Optionally, refresh the page or update the papers list
-                });
-            } else {
+            // Proceed with form submission
+            const formData = new FormData(addPaperForm);
+            fetch('add_paper.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close the modal and reset the form
+                    $('#addRowModal').modal('hide');
+                    addPaperForm.reset();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Paper added successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        // Update the papers list
+                        fetchPapers(gradeId);
+                       
+
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to add paper',
+                        text: data.message
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error adding paper:', error);
                 Swal.fire({
                     icon: 'error',
                     title: 'Failed to add paper',
-                    text: data.message
+                    text: 'An error occurred while processing your request. Please try again later.'
                 });
-            }
-        })
-        .catch(error => {
-            console.error('Error adding paper:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Failed to add paper',
-                text: 'An error occurred while processing your request. Please try again later.'
             });
-        });
-    } else {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Validation Error',
-            text: 'Please fill in all required fields.'
-        });
-    }
-});
-
-});
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Validation Error',
+                text: 'Please fill in all required fields.'
+            });
+        }
+    });
+}
 
 
     </script>
