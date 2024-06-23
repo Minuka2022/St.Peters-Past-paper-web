@@ -4,24 +4,34 @@ include 'db/connection.php';
 if (isset($_GET['grade_id'])) {
     $gradeId = $_GET['grade_id'];
 
-    $sql = "SELECT subjects.name as subject, papers.year, papers.term, papers.medium, papers.paper_name, papers.id as paper_id 
-            FROM papers 
-            INNER JOIN subjects ON papers.subject_id = subjects.id 
-            WHERE papers.grade_id = $gradeId";
+    // Ensure $gradeId is a valid integer
+    if (filter_var($gradeId, FILTER_VALIDATE_INT)) {
+        $gradeId = intval($gradeId);
 
-    $result = $conn->query($sql);
+        $sql = "SELECT subjects.name as subject, papers.year, papers.term, papers.medium, papers.paper_name, papers.id as paper_id 
+                FROM papers 
+                INNER JOIN subjects ON papers.subject_id = subjects.id 
+                WHERE papers.grade_id = ?";
 
-    if ($result) {
-        $papers = array();
-        while ($row = $result->fetch_assoc()) {
-            $papers[] = $row;
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            $stmt->bind_param('i', $gradeId);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $papers = array();
+            while ($row = $result->fetch_assoc()) {
+                $papers[] = $row;
+            }
+
+            echo json_encode(array('success' => true, 'papers' => $papers));
+        } else {
+            echo json_encode(array('success' => false, 'message' => 'Failed to prepare SQL statement.'));
         }
-        
-        // Return paper data as JSON
-        echo json_encode(array('success' => true, 'papers' => $papers));
+
+        $stmt->close();
     } else {
-        // Return error message if query fails
-        echo json_encode(array('success' => false, 'message' => $conn->error));
+        echo json_encode(array('success' => false, 'message' => 'Invalid grade ID.'));
     }
 } else {
     echo json_encode(array('success' => false, 'message' => 'Grade ID not provided.'));

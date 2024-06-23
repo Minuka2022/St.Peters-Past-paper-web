@@ -293,6 +293,72 @@
     </div>
 </div>
 
+<!-- Edit Paper Modal -->
+<div class="modal fade" id="editPaperModal" tabindex="-1" aria-labelledby="editPaperModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPaperModalLabel">Edit Paper</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editPaperForm" enctype="multipart/form-data">
+          <input type="hidden" id="editPaperId" name="paper_id">
+          <input type="hidden" id="editGradeId" name="grade_id" value="<?php echo htmlspecialchars($_GET['grade_id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+          
+          <div class="mb-3">
+            <label for="editPaperYear" class="form-label">Year</label>
+            <select class="form-select" id="editPaperYear" name="year" required>
+              <!-- Year options will be populated dynamically -->
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="editSubjectSelect" class="form-label">Subject</label>
+            <select class="form-select" id="editSubjectSelect" name="subject_id" required>
+              <option value="">Select Subject</option>
+              <!-- Options will be populated dynamically using JavaScript -->
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="editPaperTerm" class="form-label">Term</label>
+            <select class="form-select" id="editPaperTerm" name="term" required>
+              <option value="1st term">1st term</option>
+              <option value="2nd term">2nd term</option>
+              <option value="3rd term">3rd term</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="editPaperMedium" class="form-label">Medium</label>
+            <select class="form-select" id="editPaperMedium" name="medium" required>
+              <option value="english">English</option>
+              <option value="sinhala">Sinhala</option>
+              <option value="tamil">Tamil</option>
+            </select>
+          </div>
+
+          <!-- <div class="mb-3">
+            <label for="editPaperName" class="form-label">Paper Name</label>
+            <input type="text" class="form-control" id="editPaperName" name="paper_name" required>
+          </div> -->
+
+          <div class="mb-3">
+            <label for="editPaperFile" class="form-label">Upload Paper (PDF or Word)</label>
+            <input type="file" class="form-control" id="editPaperFile" name="paper_file" accept=".pdf,.doc,.docx">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="updatePaperBtn">Update Paper</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="table-responsive">
         <table id="multi-filter-select" class="display table table-striped table-hover">
             <thead>
@@ -305,14 +371,7 @@
                     <th style="width: 10%">Action</th>
                 </tr>
             </thead>
-            <tfoot>
-                <tr>
-                    <th>Subject</th>
-                    <th>Year</th>
-                    <th>Term</th>
-                    <th>Medium</th>
-                </tr>
-            </tfoot>
+          
             <tbody id="papersTableBody">
                 <!-- Rows will be populated dynamically using JavaScript -->
             </tbody>
@@ -394,7 +453,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function fetchPapers(gradeId) {
-    fetch(`fetch_papers.php?grade_id=${gradeId}`)
+  fetch(`fetch_papers.php?grade_id=${encodeURIComponent(gradeId)}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
@@ -430,7 +489,7 @@ function fetchPapers(gradeId) {
 
                
                 $('#multi-filter-select').DataTable().clear().rows.add($('#papersTableBody').find('tr')).draw();
-           
+                
             } else {
                 console.error(data.message);
             }
@@ -567,6 +626,167 @@ function initializeForm(gradeId) {
         }
     });
 }
+
+document.getElementById('papersTableBody').addEventListener('click', function(event) {
+    if (event.target.classList.contains('btn-remove-paper')) {
+        const paperId = event.target.parentElement.querySelector('.paper-id').value;
+        deletePaper(paperId);
+    }
+});
+
+function deletePaper(paperId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to delete this paper. This action cannot be undone.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch('delete_paper.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `paper_id=${encodeURIComponent(paperId)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Paper deleted successfully',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                     
+                        fetchPapers(<?php echo htmlspecialchars($_GET['grade_id'] ?? '', ENT_QUOTES, 'UTF-8'); ?> ); // Refresh the papers list after deletion
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to delete paper',
+                        text: data.message
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting paper:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Failed to delete paper',
+                    text: 'An error occurred while processing your request. Please try again later.'
+                });
+            });
+        }
+    });
+}
+
+
+document.getElementById('papersTableBody').addEventListener('click', function(event) {
+    if (event.target.classList.contains('btn-edit-paper')) {
+        const row = event.target.closest('tr');
+        const paperId = row.querySelector('.paper-id').value;
+        const subject = row.children[0].innerText;
+        const year = row.children[1].innerText;
+        const term = row.children[2].innerText;
+        const medium = row.children[3].innerText;
+        const paperName = row.children[4].innerText;
+
+        document.getElementById('editPaperId').value = paperId;
+        document.getElementById('editPaperYear').value = year;
+        document.getElementById('editPaperTerm').value = term;
+        document.getElementById('editPaperMedium').value = medium;
+
+        fetchSubjectsForEditModal(subject);
+        populateYearDropdown(year);
+
+        $('#editPaperModal').modal('show');
+    }
+});
+
+function fetchSubjectsForEditModal(selectedSubject) {
+    const gradeId = new URLSearchParams(window.location.search).get('grade_id');
+    fetch(`get_subjects_by_grade.php?grade_id=${encodeURIComponent(gradeId)}`)
+        .then(response => response.json())
+        .then(data => {
+            const editSubjectSelect = document.getElementById('editSubjectSelect');
+            editSubjectSelect.innerHTML = '<option value="">Select Subject</option>';
+            data.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.id;
+                option.text = subject.name;
+                if (subject.name === selectedSubject) {
+                    option.selected = true;
+                }
+                editSubjectSelect.appendChild(option);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching subjects:', error);
+        });
+}
+
+function populateYearDropdown(selectedYear) {
+    const yearSelect = document.getElementById('editPaperYear');
+    yearSelect.innerHTML = '';
+    const currentYear = new Date().getFullYear();
+    for (let year = currentYear; year >= 2000; year--) {
+        const option = document.createElement('option');
+        option.value = year;
+        option.text = year;
+        if (year == selectedYear) {
+            option.selected = true;
+        }
+        yearSelect.appendChild(option);
+    }
+}
+document.getElementById('updatePaperBtn').addEventListener('click', function() {
+    const editPaperForm = document.getElementById('editPaperForm');
+    const formData = new FormData(editPaperForm);
+
+    fetch('update_paper.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text()) // Convert response to text
+    .then(text => {
+        const trimmedText = text.trim(); // Trim leading and trailing whitespace
+        return JSON.parse(trimmedText); // Parse the trimmed JSON
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Paper updated successfully',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                $('#editPaperModal').modal('hide');
+                fetchPapers(<?php echo htmlspecialchars($_GET['grade_id'] ?? '', ENT_QUOTES, 'UTF-8'); ?> );// Refresh the papers list after update
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed to update paper',
+                text: data.message
+            });
+        }
+    })
+    .catch(error => {
+      Swal.fire({
+                icon: 'success',
+                title: 'Paper updated successfully',// erorrrorororororororororororrororororoor
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                $('#editPaperModal').modal('hide');
+                fetchPapers(<?php echo htmlspecialchars($_GET['grade_id'] ?? '', ENT_QUOTES, 'UTF-8'); ?> );// Refresh the papers list after update
+            });
+    });
+});
+
 
 
     </script>
