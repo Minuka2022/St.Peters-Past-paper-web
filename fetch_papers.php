@@ -8,7 +8,7 @@ if (isset($_GET['grade_id'])) {
     if (filter_var($gradeId, FILTER_VALIDATE_INT)) {
         $gradeId = intval($gradeId);
 
-        $sql = "SELECT subjects.name as subject, papers.year, papers.term, papers.medium, papers.paper_name, papers.id as paper_id 
+        $sql = "SELECT subjects.name as subject, papers.year, papers.term, papers.medium, papers.paper_name, papers.paper_file , papers.id as paper_id 
                 FROM papers 
                 INNER JOIN subjects ON papers.subject_id = subjects.id 
                 WHERE papers.grade_id = ?";

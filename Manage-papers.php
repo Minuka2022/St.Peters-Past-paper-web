@@ -436,7 +436,7 @@
     <script>
 document.addEventListener('DOMContentLoaded', function () {
   
-    const urlParams = new URLSearchParams(window.location.search);
+  const urlParams = new URLSearchParams(window.location.search);
     const gradeId = urlParams.get('grade_id');
   
     if (gradeId) {
@@ -469,7 +469,7 @@ function fetchPapers(gradeId) {
                         <td>${paper.year}</td>
                         <td>${paper.term}</td>
                         <td>${paper.medium}</td>
-                        <td>${paper.paper_name}</td>
+                        <td><a href="${paper.paper_file}" target="_blank">${paper.paper_name}</a></td>
                         <td>
                             <div class="form-button-action">
                                 <button type="button" class="btn btn-link btn-primary btn-lg btn-edit-paper" data-bs-toggle="tooltip" title="Edit Task">
