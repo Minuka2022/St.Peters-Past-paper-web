@@ -581,12 +581,12 @@
                         <td>
                             <div class="form-button-action">
                                 <button type="button" class="btn btn-link btn-primary btn-lg btn-edit-subject" data-bs-toggle="tooltip" title="Edit Task">
-                                    <i class="fa fa-edit"></i>
+                                    <i class="fa fa-edit" style="pointer-events: none;"></i>
                                 </button>
                                 <!-- Hidden input field to store subject ID -->
                                 <input type="hidden" class="subject-id" value="${subject.id}">
                                 <button type="button" class="btn btn-link btn-danger btn-remove-subject" data-bs-toggle="tooltip" title="Remove">
-                                    <i class="fa fa-times"></i>
+                                    <i class="fa fa-times" style="pointer-events: none;"></i>
                                 </button>
                             </div>
                         </td>

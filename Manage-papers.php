@@ -473,12 +473,12 @@ function fetchPapers(gradeId) {
                         <td>
                             <div class="form-button-action">
                                 <button type="button" class="btn btn-link btn-primary btn-lg btn-edit-paper" data-bs-toggle="tooltip" title="Edit Task">
-                                    <i class="fa fa-edit"></i>
+                                    <i class="fa fa-edit" style="pointer-events: none;"></i>
                                 </button>
                                 <!-- Hidden input field to store paper ID -->
                                 <input type="hidden" class="paper-id" value="${paper.paper_id}">
-                                <button type="button" class="btn btn-link btn-danger btn-remove-paper" data-bs-toggle="tooltip" title="Remove">
-                                    <i class="fa fa-times"></i>
+                                <button type="button" class="btn btn-link btn-danger btn-remove-paper"  data-bs-toggle="tooltip" title="Remove">
+                                    <i class="fa fa-times" style="pointer-events: none;"></i>
                                 </button>
                             </div>
                         </td>
