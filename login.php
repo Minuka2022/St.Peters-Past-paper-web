@@ -13,14 +13,14 @@ if (isset($_POST['login'])) {
         echo "<script>alert('Please fill in all the fields')</script>";
     } else {
         $admin = "SELECT username, password FROM admin WHERE adminID = 1";
-        $result = mysqli_query($con, $admin);
+        $result = mysqli_query($conn, $admin);
         $row = mysqli_fetch_assoc($result);
 
         //check if username and password match
         if ($username == $row['username'] && $password == $row['password']) {
             $_SESSION['admin'] = true;
             $_SESSION['username'] = $username;
-            header("Location:dashboard.html");
+            header("Location:dashboard.php");
         } else {
             echo "<script>alert('Username or password is incorrect')</script>";
         }

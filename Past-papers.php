@@ -585,7 +585,7 @@ if (isset($_SESSION['customerID'])) {
 
 
 <div class="table-container">
-    <table class="content-table">
+    <table class="content-table" id="multi-filter-select">
         <thead>
             <tr>
                 <th>No</th>
@@ -593,27 +593,39 @@ if (isset($_SESSION['customerID'])) {
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody id="paper-list">
+        <tbody id="-paperlist">
             <!-- Sample record -->
             <tr>
                 <td data-label="No">1</td>
                 <td data-label="Paper Name">Sample Paper 1</td>
-                <td data-label="Action">
+                <td data-label="Action" s>
                     <button class="download-button" onclick="window.open('papers/sample_paper_1.pdf', '_blank')">Download</button>
                     <button class="preview-button" onclick="window.open('papers/sample_paper_1_preview.pdf', '_blank')">Preview</button>
                 </td>
             </tr>
-            
+           
         </tbody>
     </table>
 </div>
-
+ <!-- Datatables -->
+ <script src="./assets/js/plugin/datatables/datatables.min.js"></script>
+<script>
+      initializeDataTable();
+function initializeDataTable() {
+  
+  $('#multi-filter-select').DataTable();
+            
+}
+</script>
 
 
 <?php include 'footer.php' ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="./js/addToCart.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+ <!--   Core JS Files   -->
+
+  <!--   Core JS Files   -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </body>
 </html>
