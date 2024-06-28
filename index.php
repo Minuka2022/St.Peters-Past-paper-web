@@ -1,7 +1,6 @@
 <?php
 
 include './db/connection.php';
-include './client/functions.php';
 //loading parameters
 ?>
 <!DOCTYPE html>
@@ -43,7 +42,7 @@ include './client/functions.php';
             outline: none;
             border-radius: 4px;
             transition: all 0.3s ease;
-        }
+        }  
 
         .dec:hover, .inc:hover {
             background: #5a9eff;
@@ -253,65 +252,31 @@ main .banner .image-container {
 
 </head>
 <body>
-<?php
 
-$full_name = "";
-
-if (isset($_SESSION['customerID'])) {
-    $full_name = $_SESSION['full_name'];
-    echo '<script defer>
-        isLogin = true;
- </script>';
-} else {
-    echo '<script defer>
-          isLogin = false; 
- </script>';
-}
-?>
 <!-- bootstrap navbar  -->
 
 <?php include 'navbar.php'; ?>
 <main>
-    <div class="banner" id="banner">
+<div class="banner" id="banner">
+   
+        
+ 
+        <div class="content">
+            <h1 class="">St.Peters college past paper web banner</h1>
+            <p class="">Sample description</p>
+            <div class="actionbtn">
+                <button id="log-in" class="" style="width: 180px;" onclick="window.location.href='https://www.stpeterscollege.lk/'">
+                    Visit School site <i class="fa fa-arrow" style="margin-left: 4px; font-size: 18px;"></i>
+                </button>
+            </div>
+        </div>
+        <div class="image-container">
+            <div class="image-overlay"></div>
+            <img src="https://www.stpeterscollege.lk/wp-content/uploads/2020/09/SPC_Web-Crest_New.png">
+        </div>
+  
+</div>
 
-    </div>
-    <script defer>
-        const banner = document.getElementById('banner');
-        if (isLogin == true) {
-            banner.innerHTML =
-                '<div class="content">' +
-                '   <h1 class="">Welcome <?php
-                    echo $full_name;
-                    ?></h1>' +
-                '   <p class="">Enjoy a safe, convenient shopping experience</p>' +
-                '   <div class="actionbtn">' +
-                '       <button id="log-out" class="" style="width: 120px; background-color: red;">Log out</button>' +
-                '   </div>' +
-                '</div>' +
-                '<div class="image-container">' +
-                '   <div class="image-overlay"></div>' +
-                '   <img src="./res/img/Picture1.png">' +
-                '</div>'
-            ;
-        } else {
-            banner.innerHTML =
-                 '<div class="content">' +
-                '   <h1 class="">St.Peters college past paper web banner</h1>' +
-                '   <p class="">Sample description</p>' +
-                '   <div class="actionbtn">' +
-                '      <button id="log-in" class="" style="width: 180px;" onclick="window.location.href=\'https://www.stpeterscollege.lk/\'">Visit School site <i class="fa fa-arrow" style="margin-left: 4px; font-size: 18px;"></i></button>' +
-                // '      <button id="register" class="" style="width: 120px;" onclick="showRegistration()">Register<i class="fa fa-user-plus" style="margin-left: 4px;"></i></button>' +
-                '   </div>' +
-                '</div>' +
-                '<div class="image-container">' +
-                '   <div class="image-overlay"></div>' +
-                '   <img src="https://www.stpeterscollege.lk/wp-content/uploads/2020/09/SPC_Web-Crest_New.png">' +
-                '</div>'
-            ;
-        }
-
-    </script>
-    <!-- <?php include './client/categories_dropdown.php'; ?> -->
 
 
 </main>
@@ -469,8 +434,7 @@ if (isset($_SESSION['customerID'])) {
 </div>
 
 
-<!-- ALL POP UPS MODALS -->
-<?php include './client/pop_ups.php' ?>
+
 
 <?php include 'footer.php' ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

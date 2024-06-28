@@ -1,187 +1,7 @@
 <?php
-session_start();
-include './db/connection.php';
-include './client/functions.php';
-//loading parameters
-$isSearching = false;
-$isFiltering = false;
-$isSorting = false;
-$sortDefaultValue = 1;
-$filterDefaultValue = 0;
-$pagingDefaultValue = 1;
-$perPageDefaultValue = 8;
 
-//content parameters
-$searchQuery = "";
-$nbProductsInPage = $perPageDefaultValue;
-$currentPage = $pagingDefaultValue;
-$sort_by = $sortDefaultValue;
-$filter_by = $filterDefaultValue;
-$productsToShow = mysqli_num_rows(mysqli_query($con, "SELECT * FROM product WHERE stock > 0"));
+include './db/connection.php'; ?>
 
-if (isset($_GET["page"])) {
-    if (($_GET["page"] > 0) || (!empty($_GET["page"]))) {
-        $currentPage = $_GET["page"];
-    }
-}
-
-if (isset($_GET["search"])) {
-    if (!empty($_GET["search"])) {
-        $isSearching = true;
-        $searchQuery = addslashes($_GET["search"]);
-    }
-}
-
-if (isset($_GET["filter_by"])) {
-    if (($_GET["filter_by"] != 0) || (!empty($_GET["filter_by"]))) {
-        $isFiltering = true;
-        $filter_by = $_GET['filter_by'];
-    }
-}
-
-if (isset($_GET["sort_by"])) {
-    if (!empty($_GET["sort_by"])) {
-        $isSorting = true;
-        $sort_by = $_GET['sort_by'];
-    }
-}
-
-if (isset($_GET["per_page"])) {
-    if (($_GET["per_page"] != 0) || (!empty($_GET["per_page"])))
-        $nbProductsInPage = $_GET["per_page"];
-}
-
-$loadQuery = "SELECT * FROM product WHERE stock > 0";
-
-//content parameters
-
-if ($isSearching) {
-    $search = $searchQuery;
-    if ($isFiltering) {
-        $filter = $filter_by;
-        if ($isSorting) {
-            switch ($sort_by) {
-                case 1:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%')) ORDER BY sale_price DESC";
-                    break;
-
-                case 2:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%')) ORDER BY sale_price ASC";
-                    break;
-
-                case 3:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%')) ORDER BY add_date DESC";
-                    break;
-
-                case 4:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%')) ORDER BY add_date ASC";
-                    break;
-
-                case 5:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%')) ORDER BY sales DESC";
-                    break;
-            }
-        } else {
-            $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%'))";
-        }
-    } else {
-        if ($isSorting) {
-            switch ($sort_by) {
-                case 1:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%')) ORDER BY sale_price DESC";
-                    break;
-
-                case 2:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%')) ORDER BY sale_price ASC";
-                    break;
-
-                case 3:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%')) ORDER BY add_date DESC";
-                    break;
-
-                case 4:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%')) ORDER BY add_date ASC";
-                    break;
-
-                case 5:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%')) ORDER BY sales DESC";
-                    break;
-            }
-        } else {
-            $loadQuery = "SELECT * FROM product WHERE stock > 0 AND ((name LIKE '%" . $search . "%') OR (description LIKE '%" . $search . "%'))";
-        }
-    }
-} else {
-    if ($isFiltering) {
-        $filter = $filter_by;
-        if ($isSorting) {
-            switch ($sort_by) {
-                case 1:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') ORDER BY sale_price DESC";
-                    break;
-
-                case 2:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') ORDER BY sale_price ASC";
-                    break;
-
-                case 3:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') ORDER BY add_date DESC";
-                    break;
-
-                case 4:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') ORDER BY add_date ASC";
-                    break;
-
-                case 5:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "') ORDER BY sales DESC";
-                    break;
-            }
-        } else {
-            $loadQuery = "SELECT * FROM product WHERE stock > 0 AND (category = '" . $filter . "')";
-        }
-
-    } else {
-        if ($isSorting) {
-            switch ($sort_by) {
-                case 1:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 ORDER BY sale_price DESC";
-                    break;
-
-                case 2:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 ORDER BY sale_price ASC";
-                    break;
-
-                case 3:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 ORDER BY add_date DESC";
-                    break;
-
-                case 4:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 ORDER BY add_date ASC";
-                    break;
-
-                case 5:
-                    $loadQuery = "SELECT * FROM product WHERE stock > 0 ORDER BY sales DESC";
-                    break;
-            }
-        } else {
-            $loadQuery = "SELECT * FROM product WHERE stock > 0";
-        }
-    }
-}
-
-$productsToShow = mysqli_num_rows(mysqli_query($con, $loadQuery));
-
-$nbPages = ceil($productsToShow / $nbProductsInPage);
-
-if ($currentPage > $nbPages) {
-    $currentPage = $nbPages;
-}
-
-$bound = ($currentPage - 1) * $nbProductsInPage;
-
-$loadQuery = $loadQuery . " LIMIT " . $bound . ", " . $nbProductsInPage;
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -431,21 +251,7 @@ main .banner .image-container {
 
 </head>
 <body>
-<?php
 
-$full_name = "";
-
-if (isset($_SESSION['customerID'])) {
-    $full_name = $_SESSION['full_name'];
-    echo '<script defer>
-        isLogin = true;
- </script>';
-} else {
-    echo '<script defer>
-          isLogin = false; 
- </script>';
-}
-?>
 <!-- bootstrap navbar  -->
 
 <?php include 'navbar.php'; ?>
@@ -605,8 +411,6 @@ if (isset($_SESSION['customerID'])) {
 
 
 
-<!-- ALL POP UPS MODALS -->
-<?php include './client/pop_ups.php' ?>
 
 <?php include 'footer.php' ?>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
