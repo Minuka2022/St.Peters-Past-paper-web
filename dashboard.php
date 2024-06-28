@@ -104,14 +104,14 @@ $result = $conn->query($sql);
               </li>
 
               <li class="nav-item">
-                <a href="Manage-Users.html">
+                <a href="Manage-Users.php">
                   <i class="fas fa-users"></i>
                   <p>Users</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="Profile.html">
+                <a href="Profile.php">
                   <i class="fas fa-user-alt"></i>
                   <p>Profile</p>
                 </a>
@@ -127,7 +127,7 @@ $result = $conn->query($sql);
           <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
-              <a href="dashboard.html" class="logo">
+              <a href="dashboard.php" class="logo">
                 <img
                   src="assets/img/kaiadmin/logo_light.svg"
                   alt="navbar brand"
@@ -191,7 +191,7 @@ $result = $conn->query($sql);
                             <h4>Hizrian</h4>
                             <p class="text-muted">hello@example.com</p>
                             <a
-                              href="Profile.html"
+                              href="Profile.php"
                               class="btn btn-xs btn-secondary btn-sm"
                               >View Profile</a
                             >
