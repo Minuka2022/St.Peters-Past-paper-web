@@ -559,7 +559,7 @@ if (isset($_SESSION['customerID'])) {
                             <option value="english">English</option>
                             <option value="french">French</option>
                             <option value="spanish">Spanish</option>
-                        </select>
+                        </select>+
                     </form>
                 </li>
                 <li>
@@ -603,6 +603,7 @@ if (isset($_SESSION['customerID'])) {
                     <button class="preview-button" onclick="window.open('papers/sample_paper_1_preview.pdf', '_blank')">Preview</button>
                 </td>
             </tr>
+            
         </tbody>
     </table>
 </div>

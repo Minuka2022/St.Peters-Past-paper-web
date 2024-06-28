@@ -2,6 +2,15 @@
 
 include './db/connection.php';
 //loading parameters
+$sql = "
+    SELECT grades.id, grades.name, COUNT(papers.id) as paper_count
+    FROM grades
+    LEFT JOIN subjects ON grades.id = subjects.grade_id
+    LEFT JOIN papers ON subjects.id = papers.subject_id
+    GROUP BY grades.id, grades.name
+    ORDER BY grades.id";
+
+$result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -397,34 +406,19 @@ main .banner .image-container {
         </center>
     </div>
     <div class="row justify-content-center">
+    <?php while ($row = $result->fetch_assoc()) { ?>
         <div class="col-md-3">
             <div class="box">
-                <a href="Subject-selection.php" class="text-decoration-none">
+                <a href="Subject-selection.php?grade_id=<?php echo $row['id']; ?>" class="text-decoration-none">
                     <div class="our-services settings custom-border" style="padding-top:80px;">
-                        <h4 style="font-weight:bold; font-size:36px;">Grade 1</h4>
+                        <h4 style="font-weight:bold; font-size:36px;"><?php echo $row['name']; ?></h4>
                     </div>
                 </a>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="box">
-                <div class="our-services settings custom-border" style="padding-top:80px; ">
-                  
-                    <h4 style="font-weight:bold; font-size:36px;" >Grade 2</h4>
-                  
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="box">
-                <div class="our-services settings custom-border" style="padding-top:80px; ">
-                  
-                    <h4 style="font-weight:bold; font-size:36px;" >Grade 3</h4>
-                  
-                </div>
-            </div>
-        </div>
+        <?php } ?>
+       
+       
     </div>
     
 

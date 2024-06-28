@@ -372,35 +372,10 @@ main .banner .image-container {
             <hr size="6">
         </center>
     </div>
-    <div class="row justify-content-center">
-        <div class="col-md-3">
-            <div class="box">
-                <a href="Past-papers.php" class="text-decoration-none">
-                    <div class="our-services settings custom-border" style="padding-top:80px;">
-                        <h4 style="font-weight:bold; font-size:36px;">Grade 1</h4>
-                    </div>
-                </a>
-            </div>
-        </div>
+    <div class="row justify-content-center" id="subjectsContainer">
+       
 
-        <div class="col-md-3">
-            <div class="box">
-                <div class="our-services settings custom-border" style="padding-top:80px; ">
-                  
-                    <h4 style="font-weight:bold; font-size:36px;" >Sinhala </h4>
-                  
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="box">
-                <div class="our-services settings custom-border" style="padding-top:80px; ">
-                  
-                    <h4 style="font-weight:bold; font-size:36px;" >Budhagama </h4>
-                  
-                </div>
-            </div>
-        </div>
+       
     </div>
     
 
@@ -409,7 +384,49 @@ main .banner .image-container {
 
 </div>
 
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const gradeId = urlParams.get('grade_id');
+            
+            if (gradeId) {
+                fetchSubjects(gradeId);
+            } else {
+                console.error('Grade ID not found in URL parameters.');
+            }
+        });
 
+        function fetchSubjects(gradeId) {
+            fetch(`Subject-selection_b.php?grade_id=${encodeURIComponent(gradeId)}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const subjectsContainer = document.getElementById('subjectsContainer');
+                        subjectsContainer.innerHTML = ''; // Clear existing content
+
+                        data.subjects.forEach(subject => {
+                            const subjectElement = document.createElement('div');
+                            subjectElement.classList.add('col-md-3');
+
+                            subjectElement.innerHTML = `
+                                <div class="box">
+                                  <a href="Past-papers.php?grade_id=${encodeURIComponent(gradeId)}&subject_id=${subject.id}" class="text-decoration-none">
+                                        <div class="our-services settings custom-border" style="padding-top:80px;">
+                                            <h4 style="font-weight:bold; font-size:36px;">${subject.name}</h4>
+                                        </div>
+                                    </a>
+                                </div>
+                            `;
+
+                            subjectsContainer.appendChild(subjectElement);
+                        });
+                    } else {
+                        console.error(data.message);
+                    }
+                })
+                .catch(error => console.error('Error fetching subjects:', error));
+        }
+    </script>
 
 
 <?php include 'footer.php' ?>
