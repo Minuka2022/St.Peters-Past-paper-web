@@ -384,48 +384,62 @@ main .banner .image-container {
 
 </div>
 
-<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const gradeId = urlParams.get('grade_id');
-            
-            if (gradeId) {
-                fetchSubjects(gradeId);
-            } else {
-                console.error('Grade ID not found in URL parameters.');
-            }
-        });
+<script>document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gradeId = urlParams.get('grade_id');
+    
+    if (gradeId) {
+        fetchSubjects(gradeId);
+    } else {
+        console.error('Grade ID not found in URL parameters.');
+    }
+});
 
-        function fetchSubjects(gradeId) {
-            fetch(`Subject-selection_b.php?grade_id=${encodeURIComponent(gradeId)}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        const subjectsContainer = document.getElementById('subjectsContainer');
-                        subjectsContainer.innerHTML = ''; // Clear existing content
+function fetchSubjects(gradeId) {
+    fetch(`Subject-selection_b.php?grade_id=${encodeURIComponent(gradeId)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const subjectsContainer = document.getElementById('subjectsContainer');
+                subjectsContainer.innerHTML = ''; // Clear existing content
 
-                        data.subjects.forEach(subject => {
-                            const subjectElement = document.createElement('div');
-                            subjectElement.classList.add('col-md-3');
+                let row = document.createElement('div');
+                row.classList.add('row', 'justify-content-center');
+                let counter = 0;
 
-                            subjectElement.innerHTML = `
-                                <div class="box">
-                                  <a href="Past-papers.php?grade_id=${encodeURIComponent(gradeId)}&subject_id=${subject.id}" class="text-decoration-none">
-                                        <div class="our-services settings custom-border" style="padding-top:80px;">
-                                            <h4 style="font-weight:bold; font-size:36px;">${subject.name}</h4>
-                                        </div>
-                                    </a>
-                                </div>
-                            `;
-
-                            subjectsContainer.appendChild(subjectElement);
-                        });
-                    } else {
-                        console.error(data.message);
+                data.subjects.forEach(subject => {
+                    if (counter % 3 === 0 && counter !== 0) {
+                        subjectsContainer.appendChild(row);
+                        row = document.createElement('div');
+                        row.classList.add('row', 'justify-content-center');
                     }
-                })
-                .catch(error => console.error('Error fetching subjects:', error));
-        }
+
+                    const subjectElement = document.createElement('div');
+                    subjectElement.classList.add('col-md-3');
+                    subjectElement.innerHTML = `
+                        <div class="box">
+                            <a href="Past-papers.php?grade_id=${encodeURIComponent(gradeId)}&subject_id=${subject.id}" class="text-decoration-none">
+                                <div class="our-services settings custom-border" style="padding-top:80px;">
+                                    <h4 style="font-weight:bold; font-size:36px;">${subject.name}</h4>
+                                </div>
+                            </a>
+                        </div>
+                    `;
+
+                    row.appendChild(subjectElement);
+                    counter++;
+                });
+
+                if (row.children.length > 0) {
+                    subjectsContainer.appendChild(row);
+                }
+            } else {
+                console.error(data.message);
+            }
+        })
+        .catch(error => console.error('Error fetching subjects:', error));
+}
+
     </script>
 
 

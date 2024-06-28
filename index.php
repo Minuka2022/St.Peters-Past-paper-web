@@ -406,7 +406,13 @@ main .banner .image-container {
         </center>
     </div>
     <div class="row justify-content-center">
-    <?php while ($row = $result->fetch_assoc()) { ?>
+    <?php 
+    $counter = 0; 
+    while ($row = $result->fetch_assoc()) { 
+        if ($counter % 3 == 0 && $counter != 0) {
+            echo '</div><div class="row justify-content-center">';
+        }
+        ?>
         <div class="col-md-3">
             <div class="box">
                 <a href="Subject-selection.php?grade_id=<?php echo $row['id']; ?>" class="text-decoration-none">
@@ -416,10 +422,12 @@ main .banner .image-container {
                 </a>
             </div>
         </div>
-        <?php } ?>
-       
-       
-    </div>
+        <?php 
+        $counter++;
+    } 
+    ?>
+</div>
+
     
 
     
