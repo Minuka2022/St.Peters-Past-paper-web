@@ -277,21 +277,7 @@ main .banner .image-container {
 
 </head>
 <body>
-<?php
 
-$full_name = "";
-
-if (isset($_SESSION['customerID'])) {
-    $full_name = $_SESSION['full_name'];
-    echo '<script defer>
-        isLogin = true;
- </script>';
-} else {
-    echo '<script defer>
-          isLogin = false; 
- </script>';
-}
-?>
 <!-- bootstrap navbar  -->
 
 <?php include 'navbar.php'; ?>
@@ -396,7 +382,7 @@ if (isset($_SESSION['customerID'])) {
         margin-bottom: 24px;
     }
 .table-container {
-    display: flex;
+   
     justify-content: center;
     padding: 20px;
     overflow-x: auto; /* Enable horizontal scrolling if needed */
@@ -480,6 +466,29 @@ if (isset($_SESSION['customerID'])) {
     float: right; /* Align search bar to the right */
 }
 /* Add media queries for additional responsiveness */
+
+/* Filters container */
+.filters {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Each filter group */
+.filter-group {
+    display: flex;
+    align-items: center;
+}
+
+.filter-group label {
+    margin-right: 10px;
+}
+
+.filter-group select {
+    width: 150px; /* Adjust width as needed */
+}
+
 @media (max-width: 768px) {
     .content-table thead {
         display: none; /* Hide the header on smaller screens */
@@ -535,6 +544,21 @@ if (isset($_SESSION['customerID'])) {
         text-align: center; /* Center text */
         margin: 5px 0; /* Add margin */
     }
+
+    .filters {
+        flex-wrap: wrap; /* Wrap filters on smaller screens */
+        justify-content: center; /* Center align filters */
+    }
+
+    .filter-group {
+        margin-bottom: 10px;
+        width: 100%; /* Full width for filter groups */
+    }
+
+    .filter-group select {
+        width: 100%; /* Full width for selects */
+    }
+
 }
 
 
@@ -568,25 +592,51 @@ if (isset($_SESSION['customerID'])) {
                   </div>
                   <div class="card-body">
                   
-                 
-                            <div class="table-container">
-                                    <table id="contentTable" class="content-table ">
-                                        <thead>
-                                            <tr>
-                                                <th>Year</th>
-                                                <th>Term</th>
-                                                <th>Medium</th>
-                                                <th>Paper Name</th>
-                                                <th style="text-align: center;">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="paperlist">
-                                            <!-- Dynamic content will be added here -->
-                                        </tbody>
-                                    </table>
-                                </div>
+                
+                        <div class="filters">
+                            <div class="filter-group">
+                                <label for="yearFilter">Year:</label>
+                                <select id="yearFilter" class="form-select">
+                                    <option value="">All</option>
+                                    <!-- Populate options dynamically with JavaScript -->
+                                </select>
+                            </div>
 
-                  </div>
+                            <div class="filter-group">
+                                <label for="termFilter">Term:</label>
+                                <select id="termFilter" class="form-select">
+                                    <option value="">All</option>
+                                    <!-- Populate options dynamically with JavaScript -->
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="mediumFilter">Medium:</label>
+                                <select id="mediumFilter" class="form-select">
+                                    <option value="">All</option>
+                                    <!-- Populate options dynamically with JavaScript -->
+                                </select>
+                            </div>
+                        </div>
+
+    <table id="contentTable" class="content-table">
+        <thead>
+            <tr>
+                <th>Year</th>
+                <th>Term</th>
+                <th>Medium</th>
+                <th>Paper Name</th>
+                <th style="text-align: center;">Action</th>
+            </tr>
+        </thead>
+        <tbody id="paperlist">
+            <!-- Dynamic content will be added here -->
+        </tbody>
+    </table>
+</div>
+
+                             </div>
+                  </div>  </div>
                 </div>
               </div>
             </div>
@@ -594,23 +644,7 @@ if (isset($_SESSION['customerID'])) {
         </div>
 
 
-<!-- 
- <div class="table-container">
-        <table id="contentTable" class="content-table ">
-            <thead>
-                <tr>
-                    <th>Year</th>
-                    <th>Term</th>
-                    <th>Medium</th>
-                    <th>Paper Name</th>
-                    <th style="text-align: center;">Action</th>
-                </tr>
-            </thead>
-            <tbody id="paperlist">
-          Dynamic content will be added here 
-            </tbody>
-        </table>
-    </div> -->
+
 
   <!-- DataTables CSS -->
 <!-- jQuery -->
@@ -620,54 +654,64 @@ if (isset($_SESSION['customerID'])) {
     <script src="./assets/js/plugin/datatables/datatables.min.js"></script>
 
 <script>
-   
+   $(document).ready(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gradeId = urlParams.get('grade_id');
+    const subjectId = urlParams.get('subject_id');
 
-     document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const gradeId = urlParams.get('grade_id');
-            const subjectId = urlParams.get('subject_id');
-            
-            if (gradeId && subjectId) {
-                fetchPapers(gradeId, subjectId);
-            } else {
-                console.error('Grade ID or Subject ID not found in URL parameters.');
-            }
+    if (gradeId && subjectId) {
+        fetchPapers(gradeId, subjectId);
+    } else {
+        console.error('Grade ID or Subject ID not found in URL parameters.');
+    }
 
-            $(document).ready(function() {
-    $('#contentTable').DataTable({
+    const dataTable = $('#contentTable').DataTable({
         responsive: true,
         initComplete: function() {
-            var api = this.api();
             $('.dataTables_filter').addClass('float-end'); // Align search bar to the right
         }
     });
-});
-        });
 
-        function fetchPapers(gradeId, subjectId) {
+    $('#yearFilter, #termFilter, #mediumFilter').on('change', function() {
+        filterTable(dataTable);
+    });
+});
+
+function fetchPapers(gradeId, subjectId) {
     fetch(`subject-papers.php?grade_id=${encodeURIComponent(gradeId)}&subject_id=${encodeURIComponent(subjectId)}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                const papersTableBody = document.getElementById('paperlist');
-                papersTableBody.innerHTML = ''; // Clear existing rows
+                const papersTableBody = $('#paperlist');
+                papersTableBody.empty(); // Clear existing rows
+
+                const years = new Set();
+                const terms = new Set();
+                const mediums = new Set();
 
                 data.papers.forEach(paper => {
-                    const row = document.createElement('tr');
+                    years.add(paper.year);
+                    terms.add(paper.term);
+                    mediums.add(paper.medium);
 
-                    row.innerHTML = `
-                        <td data-label="year">${paper.year}</td>
-                        <td data-label="term">${paper.term}</td>
-                        <td data-label="medium">${paper.medium}</td>
-                        <td data-label="Paper Name">${paper.paper_name}</td>
-                        <td data-label="Action">
-                            <button class="download-button" onclick="downloadFile('${paper.paper_file}', '${paper.paper_name}')">Download</button>
-                            <button class="preview-button" onclick="window.open('${paper.paper_file}', '_blank')">Preview</button>
-                        </td>
+                    const row = `
+                        <tr>
+                            <td data-label="year">${paper.year}</td>
+                            <td data-label="term">${paper.term}</td>
+                            <td data-label="medium">${paper.medium}</td>
+                            <td data-label="Paper Name">${paper.paper_name}</td>
+                            <td data-label="Action">
+                                <button class="download-button" onclick="downloadFile('${paper.paper_file}', '${paper.paper_name}')">Download</button>
+                                <button class="preview-button" onclick="window.open('${paper.paper_file}', '_blank')">Preview</button>
+                            </td>
+                        </tr>
                     `;
-
-                    papersTableBody.appendChild(row);
+                    papersTableBody.append(row);
                 });
+
+                populateFilter('#yearFilter', years);
+                populateFilter('#termFilter', terms);
+                populateFilter('#mediumFilter', mediums);
 
                 // Reinitialize DataTables to update the table with new content
                 $('#contentTable').DataTable().clear().rows.add($(papersTableBody).find('tr')).draw();
@@ -676,6 +720,26 @@ if (isset($_SESSION['customerID'])) {
             }
         })
         .catch(error => console.error('Error fetching papers:', error));
+}
+
+function populateFilter(filterId, values) {
+    const filter = $(filterId);
+    filter.empty();
+    filter.append('<option value="">All</option>');
+    values.forEach(value => {
+        filter.append(`<option value="${value}">${value}</option>`);
+    });
+}
+
+function filterTable(dataTable) {
+    const yearFilter = $('#yearFilter').val();
+    const termFilter = $('#termFilter').val();
+    const mediumFilter = $('#mediumFilter').val();
+
+    dataTable.column(0).search(yearFilter ? '^' + yearFilter + '$' : '', true, false);
+    dataTable.column(1).search(termFilter ? '^' + termFilter + '$' : '', true, false);
+    dataTable.column(2).search(mediumFilter ? '^' + mediumFilter + '$' : '', true, false);
+    dataTable.draw();
 }
 
 function downloadFile(fileUrl, fileName) {
@@ -688,7 +752,6 @@ function downloadFile(fileUrl, fileName) {
     anchor.click();
     document.body.removeChild(anchor);
 }
-
 </script>
 
 
