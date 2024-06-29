@@ -442,6 +442,9 @@ main .banner .image-container {
     transform: translateY(-50%); /* Adjust for vertical centering */
 }
 
+.dataTables_length {
+    display: none;
+}
 .download-button {
     background-color: #009879;
     right: 125px; /* Adjust position */
@@ -470,15 +473,15 @@ main .banner .image-container {
 /* Filters container */
 .filters {
     display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    margin-bottom: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px; /* Adjust this value as needed */
 }
 
-/* Each filter group */
 .filter-group {
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .filter-group label {
@@ -486,7 +489,8 @@ main .banner .image-container {
 }
 
 .filter-group select {
-    width: 150px; /* Adjust width as needed */
+    display: inline-block;
+    width: auto;
 }
 
 @media (max-width: 768px) {
@@ -499,6 +503,39 @@ main .banner .image-container {
         width: 100%;
     }
 
+  .filter-group {
+        flex: 1 1 100%;
+        padding: 10px; /* Add padding for better touch target */
+        border-radius: 5px; /* Rounded corners for a more modern look */
+        background-color: #f9f9f9; /* Light background for contrast */
+        margin-bottom: 10px; /* Space between filters */
+        text-align: left; /* Ensure label is aligned to the left */
+    }
+    
+    .filter-group label {
+        width: 100%;
+        display: block;
+        font-size: 16px; /* Larger font for readability */
+        margin-bottom: 5px; /* Space between label and select */
+    }
+    
+    .filter-group select {
+        width: 100%; /* Full width to ensure it occupies the container */
+        display: block;
+        font-size: 16px; /* Larger font for readability */
+        margin-top: 5px;
+        padding: 10px; /* Increase padding for better touch targets */
+        border: 1px solid #ccc; /* Border for better visibility */
+        border-radius: 5px; /* Rounded corners */
+        background-color: #fff; /* White background for clarity */
+        text-align: left; /* Align text inside the dropdown to the left */
+        direction: rtl; /* Switch text direction to right-to-left */
+    }
+    
+    .filter-group select option {
+        text-align: left; /* Ensure options text is aligned to the left */
+        direction: ltr; /* Switch text direction back to left-to-right */
+    }
     .content-table tr {
         margin-bottom: 15px;
     }
@@ -522,10 +559,9 @@ main .banner .image-container {
     }
 
     .content-table button {
-        position: static; /* Revert to static positioning on small screens */
-        margin-top: 10px; /* Add margin for spacing */
-        transform: none; /* Remove transform */
-        width: 100%; /* Full width button on small screens */
+        position: relative;
+        transform: translateY(0);
+        margin: 8px 4px;
     }
 
     .download-button, .preview-button {
@@ -562,9 +598,6 @@ main .banner .image-container {
 }
 
 
-
-
-
 </style>
 
 
@@ -572,89 +605,82 @@ main .banner .image-container {
 
 <div class="container-fluid mb-5 services" id="services">
     <div class="text-center mt-5">
-        <h1>Grade<?php echo htmlspecialchars($_GET['grade_id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>  </h1>
-        <h1><?php echo htmlspecialchars($subjectName, ENT_QUOTES, 'UTF-8'); ?> </h1>
+        <h1>Grade<?php echo htmlspecialchars($_GET['grade_id'] ?? '', ENT_QUOTES, 'UTF-8'); ?></h1>
+        <h1><?php echo htmlspecialchars($subjectName, ENT_QUOTES, 'UTF-8'); ?></h1>
         <center>
             <hr size="6">
         </center>
     </div>
       
- <!-- fltetrt -->
-
- <!-- fltetrt -->
- <div class="col-md-12">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="d-flex align-items-center">
-                      <h4 class="card-title">Download Your Papers Here</h4>
-                      
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body" >
+                <div class="filters" style="margin-bottom: 20px; position:relative; top:20px; " >
+                     <div class="filter-group d-flex align-items-center">
+                        <label for="showEntries" class="me-2">Show entries</label>
+                        <select id="showEntries" class="form-select me-2">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        
                     </div>
-                  </div>
-                  <div class="card-body">
-                  
+                    
+                    <div class="filter-group d-flex align-items-center">
+                        <label for="yearFilter" class="me-2">Year:</label>
+                        <select id="yearFilter" class="form-select me-2">
+                            <option value="">All</option>
+                            <!-- Populate options dynamically with JavaScript -->
+                        </select>
+                    </div>
+                    <div class="filter-group d-flex align-items-center">
+                        <label for="termFilter" class="me-2">Term:</label>
+                        <select id="termFilter" class="form-select me-2">
+                            <option value="">All</option>
+                            <!-- Populate options dynamically with JavaScript -->
+                        </select>
+                    </div>
+                    <div class="filter-group d-flex align-items-center">
+                        <label for="mediumFilter" class="me-2">Medium:</label>
+                        <select id="mediumFilter" class="form-select">
+                            <option value="">All</option>
+                            <!-- Populate options dynamically with JavaScript -->
+                        </select>
+                    </div>
+                </div>
+
                 
-                        <div class="filters">
-                            <div class="filter-group">
-                                <label for="yearFilter">Year:</label>
-                                <select id="yearFilter" class="form-select">
-                                    <option value="">All</option>
-                                    <!-- Populate options dynamically with JavaScript -->
-                                </select>
-                            </div>
 
-                            <div class="filter-group">
-                                <label for="termFilter">Term:</label>
-                                <select id="termFilter" class="form-select">
-                                    <option value="">All</option>
-                                    <!-- Populate options dynamically with JavaScript -->
-                                </select>
-                            </div>
 
-                            <div class="filter-group">
-                                <label for="mediumFilter">Medium:</label>
-                                <select id="mediumFilter" class="form-select">
-                                    <option value="">All</option>
-                                    <!-- Populate options dynamically with JavaScript -->
-                                </select>
-                            </div>
-                        </div>
-
-    <table id="contentTable" class="content-table">
-        <thead>
-            <tr>
-                <th>Year</th>
-                <th>Term</th>
-                <th>Medium</th>
-                <th>Paper Name</th>
-                <th style="text-align: center;">Action</th>
-            </tr>
-        </thead>
-        <tbody id="paperlist">
-            <!-- Dynamic content will be added here -->
-        </tbody>
-    </table>
+                <table id="contentTable" class="content-table">
+                    <thead>
+                        <tr>
+                            <th>Year</th>
+                            <th>Term</th>
+                            <th>Medium</th>
+                            <th>Paper Name</th>
+                            <th style="text-align: center;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paperlist">
+                        <!-- Dynamic content will be added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
 
-                             </div>
-                  </div>  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-  <!-- DataTables CSS -->
+<!-- DataTables CSS -->
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Datatables -->
-    <script src="./assets/js/plugin/datatables/datatables.min.js"></script>
+<!-- Datatables -->
+<script src="./assets/js/plugin/datatables/datatables.min.js"></script>
 
 <script>
-   $(document).ready(function() {
+$(document).ready(function() {
     const urlParams = new URLSearchParams(window.location.search);
     const gradeId = urlParams.get('grade_id');
     const subjectId = urlParams.get('subject_id');
@@ -753,6 +779,7 @@ function downloadFile(fileUrl, fileName) {
     document.body.removeChild(anchor);
 }
 </script>
+
 
 
 <?php include 'footer.php' ?>
