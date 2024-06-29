@@ -1,8 +1,32 @@
 <?php
 
-include './db/connection.php';
+include 'db/connection.php';
 
+// Initialize subject name variable
+$subjectName = '';
+
+// Check if subject_id is set in the URL parameters
+if (isset($_GET['subject_id'])) {
+    $subjectId = $_GET['subject_id'];
+
+    // Prepare and execute SQL query to fetch subject name
+    $sql = "SELECT name FROM subjects WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param('i', $subjectId);
+    $stmt->execute();
+    $stmt->bind_result($subjectName);
+    $stmt->fetch();
+    $stmt->close();
+
+    // Check if subject name was fetched successfully
+    if (!$subjectName) {
+        $subjectName = 'Subject not found'; // Default message if subject name is not found
+    }
+} else {
+    $subjectName = 'Subject ID not provided'; // Default message if subject_id is not set in URL
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -447,6 +471,10 @@ if (isset($_SESSION['customerID'])) {
     background-color: #660066;
 }
 
+
+.dataTables_wrapper .dataTables_filter {
+    float: right; /* Align search bar to the right */
+}
 /* Add media queries for additional responsiveness */
 @media (max-width: 768px) {
     .content-table thead {
@@ -466,6 +494,8 @@ if (isset($_SESSION['customerID'])) {
         text-align: right;
         padding-left: 50%;
         position: relative;
+        word-wrap: break-word; /* Allow text to wrap within the cell */
+       
     }
 
     .content-table td::before {
@@ -492,7 +522,17 @@ if (isset($_SESSION['customerID'])) {
     .preview-button {
         margin-left: 0; /* Remove margin on small screens */
     }
+    .dataTables_wrapper .dataTables_paginate {
+        text-align: center;
+    }
+    .dataTables_wrapper .dataTables_paginate .paginate_button {
+        display: block; /* Ensure buttons are block level */
+        width: 100%; /* Full width */
+        text-align: center; /* Center text */
+        margin: 5px 0; /* Add margin */
+    }
 }
+
 
 
 
@@ -504,7 +544,8 @@ if (isset($_SESSION['customerID'])) {
 
 <div class="container-fluid mb-5 services" id="services">
     <div class="text-center mt-5">
-        <h1>Grade 3  </h1>
+        <h1>Grade<?php echo htmlspecialchars($_GET['grade_id'] ?? '', ENT_QUOTES, 'UTF-8'); ?>  </h1>
+        <h1><?php echo htmlspecialchars($subjectName, ENT_QUOTES, 'UTF-8'); ?> </h1>
         <center>
             <hr size="6">
         </center>
@@ -512,110 +553,138 @@ if (isset($_SESSION['customerID'])) {
       
  <!-- fltetrt -->
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mt-5 shadow p-2 mb-5 bg-body rounded" id="products-all">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold">Grade 3 </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li>
-                    <form style="margin-right: 12px;">
-                        <select id="year_selector" name="year" class="form-select form-select-sm"
-                                aria-label=".form-select-sm example">
-                            <option selected>Select Year</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                            <option value="2021">2021</option>
-                        </select>
-                    </form>
-                </li>
-                <li>
-                    <form style="margin-right: 12px;">
-                        <select id="categories_list" name="filter_by" class="form-select form-select-sm"
-                                aria-label=".form-select-sm example">
-                        </select>
-                    </form>
-                </li>
-                <li>
-                    <form style="margin-right: 12px;">
-                        <select id="term_selector" name="term" class="form-select form-select-sm"
-                                aria-label=".form-select-sm example">
-                            <option selected>Select Term</option>
-                            <option value="1">Term 1</option>
-                            <option value="2">Term 2</option>
-                            <option value="3">Term 3</option>
-                        </select>
-                    </form>
-                </li>
-                <li>
-                    <form style="margin-right: 12px;">
-                        <select id="medium_selector" name="medium" class="form-select form-select-sm"
-                                aria-label=".form-select-sm example">
-                            <option selected>Select Medium</option>
-                            <option value="english">English</option>
-                            <option value="french">French</option>
-                            <option value="spanish">Spanish</option>
-                        </select>+
-                    </form>
-                </li>
-                <li>
-                    <form style="margin-right: 12px;">
-                        <select id="sort_selector" name="sort_by" class="form-select form-select-sm"
-                                aria-label=".form-select-sm example">
-                        </select>
-                    </form>
-                </li>
-                <li>
-                    <button type="button" class="btn btn-primary" id="filter-button">Filter</button>
-                </li>
-              
-            </ul>
-        </div>
-    </div>
-</nav>
-
  <!-- fltetrt -->
+ <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="d-flex align-items-center">
+                      <h4 class="card-title">Download Your Papers Here</h4>
+                      
+                    </div>
+                  </div>
+                  <div class="card-body">
+                  
+                 
+                            <div class="table-container">
+                                    <table id="contentTable" class="content-table ">
+                                        <thead>
+                                            <tr>
+                                                <th>Year</th>
+                                                <th>Term</th>
+                                                <th>Medium</th>
+                                                <th>Paper Name</th>
+                                                <th style="text-align: center;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="paperlist">
+                                            <!-- Dynamic content will be added here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
+<!-- 
+ <div class="table-container">
+        <table id="contentTable" class="content-table ">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Term</th>
+                    <th>Medium</th>
+                    <th>Paper Name</th>
+                    <th style="text-align: center;">Action</th>
+                </tr>
+            </thead>
+            <tbody id="paperlist">
+          Dynamic content will be added here 
+            </tbody>
+        </table>
+    </div> -->
 
+  <!-- DataTables CSS -->
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <!-- Datatables -->
+    <script src="./assets/js/plugin/datatables/datatables.min.js"></script>
 
-<div class="table-container">
-    <table class="content-table" id="multi-filter-select">
-        <thead>
-            <tr>
-                <th>No</th>
-                <th>Paper Name</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="-paperlist">
-            <!-- Sample record -->
-            <tr>
-                <td data-label="No">1</td>
-                <td data-label="Paper Name">Sample Paper 1</td>
-                <td data-label="Action" s>
-                    <button class="download-button" onclick="window.open('papers/sample_paper_1.pdf', '_blank')">Download</button>
-                    <button class="preview-button" onclick="window.open('papers/sample_paper_1_preview.pdf', '_blank')">Preview</button>
-                </td>
-            </tr>
-           
-        </tbody>
-    </table>
-</div>
- <!-- Datatables -->
- <script src="./assets/js/plugin/datatables/datatables.min.js"></script>
 <script>
-      initializeDataTable();
-function initializeDataTable() {
-  
-  $('#multi-filter-select').DataTable();
+   
+
+     document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const gradeId = urlParams.get('grade_id');
+            const subjectId = urlParams.get('subject_id');
             
+            if (gradeId && subjectId) {
+                fetchPapers(gradeId, subjectId);
+            } else {
+                console.error('Grade ID or Subject ID not found in URL parameters.');
+            }
+
+            $(document).ready(function() {
+    $('#contentTable').DataTable({
+        responsive: true,
+        initComplete: function() {
+            var api = this.api();
+            $('.dataTables_filter').addClass('float-end'); // Align search bar to the right
+        }
+    });
+});
+        });
+
+        function fetchPapers(gradeId, subjectId) {
+    fetch(`subject-papers.php?grade_id=${encodeURIComponent(gradeId)}&subject_id=${encodeURIComponent(subjectId)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const papersTableBody = document.getElementById('paperlist');
+                papersTableBody.innerHTML = ''; // Clear existing rows
+
+                data.papers.forEach(paper => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td data-label="year">${paper.year}</td>
+                        <td data-label="term">${paper.term}</td>
+                        <td data-label="medium">${paper.medium}</td>
+                        <td data-label="Paper Name">${paper.paper_name}</td>
+                        <td data-label="Action">
+                            <button class="download-button" onclick="downloadFile('${paper.paper_file}', '${paper.paper_name}')">Download</button>
+                            <button class="preview-button" onclick="window.open('${paper.paper_file}', '_blank')">Preview</button>
+                        </td>
+                    `;
+
+                    papersTableBody.appendChild(row);
+                });
+
+                // Reinitialize DataTables to update the table with new content
+                $('#contentTable').DataTable().clear().rows.add($(papersTableBody).find('tr')).draw();
+            } else {
+                console.error(data.message);
+            }
+        })
+        .catch(error => console.error('Error fetching papers:', error));
 }
+
+function downloadFile(fileUrl, fileName) {
+    // Construct a hidden anchor element to trigger the file download
+    const anchor = document.createElement('a');
+    anchor.style.display = 'none';
+    anchor.href = fileUrl;
+    anchor.download = fileName;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+}
+
 </script>
 
 
