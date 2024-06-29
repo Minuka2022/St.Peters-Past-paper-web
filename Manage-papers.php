@@ -7,11 +7,10 @@
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
     />
-    <link
-      rel="icon"
-      href="./assets/img/kaiadmin/favicon.ico"
-      type="image/x-icon"
-    />
+    <link rel="apple-touch-icon" sizes="180x180" href="res/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="res/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="res/img/favicon-16x16.png">
+<link rel="manifest" href="res/img/site.webmanifest">
 
     <!-- Fonts and icons -->
     <script src="./assets/js/plugin/webfont/webfont.min.js"></script>
@@ -48,7 +47,7 @@
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="dark">
-             <a href="dashboard.html" class="logo">
+             <a href="dashboard.php" class="logo">
               <img
                 src="assets/img/SPCPTA.png"
                 alt="navbar brand"
@@ -74,28 +73,28 @@
           <div class="sidebar-content">
             <ul class="nav nav-secondary">
               <li class="nav-item active">
-                <a href="dashboard.html" class="" aria-expanded="false">
+                <a href="dashboard.php" class="" aria-expanded="false">
                   <i class="fas fa-home"></i>
                   <p>Dashboard</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="Manage-Subjects.html">
+                <a href="Manage-Subjects.php">
                   <i class="fas fa-layer-group"></i>
                   <p>Subjects</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="Manage-Users.html">
+                <a href="Manage-Users.php">
                   <i class="fas fa-users"></i>
                   <p>Users</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="Profile.html">
+                <a href="Profile.php">
                   <i class="fas fa-user-alt"></i>
                   <p>Profile</p>
                 </a>
@@ -112,7 +111,7 @@
           <div class="main-header-logo">
             <!-- Logo Header -->
             <div class="logo-header" data-background-color="dark">
-               <a href="dashboard.html" class="logo">
+               <a href="dashboard.php" class="logo">
               <img
                 src="assets/img/SPCPTA.png"
                 alt="navbar brand"
@@ -174,7 +173,7 @@
                             <h4>Hizrian</h4>
                             <p class="text-muted">hello@example.com</p>
                             <a
-                              href="/forms/Profile.html"
+                              href="/forms/Profile.php"
                               class="btn btn-xs btn-secondary btn-sm"
                               >View Profile</a
                             >

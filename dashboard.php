@@ -22,11 +22,10 @@ $result = $conn->query($sql);
       content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
       name="viewport"
     />
-    <link
-      rel="icon"
-      href="assets/img/kaiadmin/favicon.ico"
-      type="image/x-icon"
-    />
+     <link rel="apple-touch-icon" sizes="180x180" href="res/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="res/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="res/img/favicon-16x16.png">
+<link rel="manifest" href="res/img/site.webmanifest">
 
     <!-- Fonts and icons -->
     <script src="assets/js/plugin/webfont/webfont.min.js"></script>

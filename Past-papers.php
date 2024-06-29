@@ -9,7 +9,7 @@ include './db/connection.php';
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="./res/img/logo.svg">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -19,6 +19,10 @@ include './db/connection.php';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="./style/index.css">
     <link rel="stylesheet" href="./style/select_text.css">
+     <link rel="apple-touch-icon" sizes="180x180" href="res/img/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="res/img/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="res/img/favicon-16x16.png">
+<link rel="manifest" href="res/img/site.webmanifest">
     <title>stpc.lk</title>
    
     <style>
