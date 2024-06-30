@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 
 <?php
+
+session_start();
+if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
+    header("Location: login.php");
+    exit();
+}
+
 include './db/connection.php';
 $sql = "
     SELECT grades.id, grades.name, COUNT(papers.id) as paper_count
@@ -172,7 +179,7 @@ $result = $conn->query($sql);
                     </div>
                     <span class="profile-username">
                       <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Jhone doe</span>
+                      <span class="fw-bold"><?php echo htmlspecialchars($_SESSION['full_name']); ?></span>
                     </span>
                   </a>
                   <ul class="dropdown-menu dropdown-user animated fadeIn">

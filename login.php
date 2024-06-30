@@ -1,8 +1,6 @@
 <?php
 include './db/connection.php';
 session_start();
-$username = "";
-$password = "";
 
 if (isset($_POST['login'])) {
     $username = htmlspecialchars($_POST['username']);
@@ -12,21 +10,23 @@ if (isset($_POST['login'])) {
     if (empty($username) || empty($password)) {
         echo "<script>alert('Please fill in all the fields')</script>";
     } else {
-        $admin = "SELECT username, password FROM admin WHERE adminID = 1";
+        $admin = "SELECT full_name, username, password FROM admin WHERE adminID = 1";
         $result = mysqli_query($conn, $admin);
         $row = mysqli_fetch_assoc($result);
 
-        //check if username and password match
+        // Check if username and password match
         if ($username == $row['username'] && $password == $row['password']) {
             $_SESSION['admin'] = true;
             $_SESSION['username'] = $username;
-            header("Location:dashboard.php");
+            $_SESSION['full_name'] = $row['full_name'];
+            header("Location: dashboard.php");
         } else {
             echo "<script>alert('Username or password is incorrect')</script>";
         }
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

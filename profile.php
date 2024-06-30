@@ -1,3 +1,19 @@
+
+<?php
+include './db/connection.php';
+session_start();
+if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
+    header("Location: login.php");
+    exit();
+}
+
+$username = $_SESSION['username'];
+$admin = "SELECT full_name, username, email, phone, password FROM admin WHERE username = '$username'";
+$result = mysqli_query($conn, $admin);
+$row = mysqli_fetch_assoc($result);
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -14,6 +30,7 @@
 <link rel="manifest" href="res/img/site.webmanifest">
     <!-- Fonts and icons -->
     <script src="./assets/js/plugin/webfont/webfont.min.js"></script>
+
     <script>
       WebFont.load({
         google: { families: ["Public Sans:300,400,500,600,700"] },
@@ -153,7 +170,7 @@
                     </div>
                     <span class="profile-username">
                       <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Jhone doe</span>
+                      <span class="fw-bold"><?php echo htmlspecialchars($_SESSION['full_name']); ?></span>
                     </span>
                   </a>
                   <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -212,88 +229,97 @@
               </ul>
             </div>
             <div class="row">
-              <div class="col-md-12">
-                <div class="card">
-                  <div class="card-header">
-                    <div class="card-title">User profile</div>
-                  </div>
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-md-6 col-lg-4">
-                        <div class="form-group">
-                          <label for="full-name">Full name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="username"
-                            placeholder="Enter Full name"
-                          />
-                         
-                        </div>
-                        <div class="form-group">
-                          <label for="username">Username</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="username"
-                            placeholder="Enter username"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-6 col-lg-4">
-                        <div class="form-group">
-                          <label for="email2">Email Address</label>
-                          <input
-                            type="email"
-                            class="form-control"
-                            id="email2"
-                            placeholder="Enter Email"
-                          />
-                         
-                        </div>
-                        <div class="form-group">
-                          <label for="PhoneNumber">Phone number</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="phone-number"
-                            placeholder="Phone number"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-6 col-lg-4">
-
-                        <div class="form-group">
-                          <label for="password">Current Password</label>
-                          <input
-                            type="password"
-                            class="form-control"
-                            id="password"
-                            placeholder="Password"
-                          />
-                        </div>
-
-                        <div class="form-group">
-                          <label for="password">New Password</label>
-                          <input
-                            type="password"
-                            class="form-control"
-                            id="password"
-                            placeholder="Password"
-                          />
-                       
-                        </div>
-                        
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card-action">
-                    <button class="btn btn-success">Update</button>
-                    
-                  </div>
-                </div>
-              </div>
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">User Profile</div>
             </div>
+            <div class="card-body">
+                <form id="profile-form">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label for="full-name">Full name</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="full_name"
+                                    id="full-name"
+                                    value="<?php echo htmlspecialchars($row['full_name']); ?>"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="username"
+                                    id="username"
+                                    value="<?php echo htmlspecialchars($row['username']); ?>"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input
+                                    type="email"
+                                    class="form-control"
+                                    name="email"
+                                    id="email"
+                                    value="<?php echo htmlspecialchars($row['email']); ?>"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="phone-number">Phone number</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    name="phone"
+                                    id="phone-number"
+                                    value="<?php echo htmlspecialchars($row['phone']); ?>"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    name="current_password"
+                                    id="current-password"
+                                     autocomplete="new-password"
+                                    placeholder="Current Password"
+                                />
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input
+                                    type="password"
+                                    class="form-control"
+                                    name="new_password"
+                                    id="new-password"
+                                    placeholder="New Password"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-action">
+                        <button type="button" class="btn btn-success" id="update-button">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
           </div>
         </div>
 
@@ -311,9 +337,15 @@
         </footer>
       </div>
 
-      <!-- Custom template | don't include it in your project! -->
-      
-    <!--   Core JS Files   -->
+<!-- Include jQuery and SweetAlert scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <!-- Kaiadmin JS -->
+    <script src="./assets/js/kaiadmin.min.js"></script>
+    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
+    <script src="./assets/js/setting-demo2.js"></script>
+        
     <script src="./assets/js/core/jquery-3.7.1.min.js"></script>
     <script src="./assets/js/core/popper.min.js"></script>
     <script src="./assets/js/core/bootstrap.min.js"></script>
@@ -343,13 +375,53 @@
     <!-- Google Maps Plugin -->
     <script src="./assets/js/plugin/gmaps/gmaps.js"></script>
 
-    <!-- Sweet Alert -->
-    <script src="./assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+ 
 
-    <!-- Kaiadmin JS -->
-    <script src="./assets/js/kaiadmin.min.js"></script>
 
-    <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-    <script src="./assets/js/setting-demo2.js"></script>
+      <script>
+$(document).ready(function() {
+    $('#update-button').on('click', function() {
+        var formData = $('#profile-form').serialize();
+        
+        $.ajax({
+            url: 'update_profile.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    swal({
+                        title: 'Success',
+                        text: response.message,
+                        icon: 'success',
+                        button: 'OK'
+                    }).then(function() {
+                        location.reload();
+                    });
+                } else {
+                    swal({
+                        title: 'Error',
+                        text: response.message,
+                        icon: 'error',
+                        button: 'OK'
+                    });
+                }
+            },
+            error: function() {
+                swal({
+                    title: 'Error',
+                    text: 'An error occurred while updating your profile',
+                    icon: 'error',
+                    button: 'OK'
+                });
+            }
+        });
+    });
+});
+
+</script>
+
+  
+  
   </body>
 </html>
