@@ -3,7 +3,7 @@
 $serverName = "localhost";
 $DBusername = "root";
 $DBpassword = "";
-$DBname = "ecommerce";
+$DBname = "spcptalk_ecommerce";
 
 $conn = new mysqli($serverName, $DBusername, $DBpassword, $DBname);
 if ($conn->connect_error) {
