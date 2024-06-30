@@ -163,7 +163,7 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                     </div>
                     <span class="profile-username">
                       <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Jhone doe</span>
+                      <span class="fw-bold"><?php echo htmlspecialchars($_SESSION['full_name']); ?></span>
                     </span>
                   </a>
                   <ul class="dropdown-menu dropdown-user animated fadeIn">

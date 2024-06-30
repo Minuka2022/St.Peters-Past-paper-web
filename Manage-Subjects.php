@@ -176,20 +176,22 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] !== true) {
                     </div>
                     <span class="profile-username">
                       <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Jhone doe</span>
+                      <span class="fw-bold"><?php echo htmlspecialchars($_SESSION['full_name']); ?></span>
                     </span>
+                  </a>
                   </a>
                   <ul class="dropdown-menu dropdown-user animated fadeIn">
                     <div class="dropdown-user-scroll scrollbar-outer">
                       <li>
                         <div class="user-box">
                           <div class="avatar-lg">
-                            <img
+                            <imgd
                               src="assets/img/profile.jpg"
                               alt="image profile"
                               class="avatar-img rounded"
                             />
                           </div>
+                          
                           <div class="u-text">
                             <h4>Hizrian</h4>
                             <p class="text-muted">hello@example.com</p>
